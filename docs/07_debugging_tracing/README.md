@@ -1,0 +1,42 @@
+# Debugging and Tracing
+
+BookSim provides several tools for monitoring the state of the network and debugging performance issues.
+
+## Activity Monitoring
+
+- `print_activity`: If set to 1, prints a detailed log of buffer reads/writes and crossbar activity at each cycle. This is useful for identifying bottlenecks.
+- `viewer_trace`: Generates a trace file that can be used with external visualization tools.
+
+## Flit and Packet Watching
+
+You can track specific flits or packets as they move through the network.
+
+- `watch_file`: A file containing IDs of flits/packets to watch.
+- `watch_flits`, `watch_packets`: Direct specification of IDs to watch.
+- `watch_out`: The file where watch information is logged.
+
+## Statistics and Output Files
+
+- `stats_out`: File where final statistics (average latency, throughput, etc.) are saved.
+- **Detailed Flow Tracking** (if compiled with `TRACK_FLOWS`):
+  - `injected_flits_out`
+  - `received_flits_out`
+  - `stored_flits_out` (useful for buffer occupancy analysis)
+  - `sent_flits_out`
+  - `outstanding_credits_out`
+
+## Deadlock Detection
+
+- `deadlock_warn_timeout`: Number of cycles a flit can be stalled before a deadlock warning is issued.
+
+## Example Usage
+
+To watch a specific flit ID 1234 and output to `debug.txt`:
+```
+watch_flits = 1234
+watch_out = debug.txt
+```
+To print activity for performance analysis:
+```
+print_activity = 1
+```
