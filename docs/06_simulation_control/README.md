@@ -1,6 +1,6 @@
 # Simulation Control
 
-Simulation control parameters determine how long a simulation runs and how statistics are collected.
+Simulation control parameters determine how long a simulation runs and how statistics are collected. The core simulation logic is handled by the [TrafficManager](../../booksim/src/trafficmanager.cpp#L58).
 
 ## Simulation Types (`sim_type`)
 

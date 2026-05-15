@@ -4,7 +4,7 @@ BookSim uses credit-based flow control to manage buffer space and prevent overfl
 
 ## Virtual Channels
 
-VCs allow multiple packets to share a single physical link by partitioning the input buffers.
+VCs allow multiple packets to share a single physical link by partitioning the input buffers. Implementation of virtual channels can be found in [vc.cpp](../../booksim/src/vc.cpp#L48) and overall buffer management in [buffer.cpp](../../booksim/src/buffer.cpp#L34).
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|

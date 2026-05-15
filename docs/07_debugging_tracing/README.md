@@ -17,7 +17,7 @@ You can track specific flits or packets as they move through the network.
 
 ## Statistics and Output Files
 
-- `stats_out`: File where final statistics (average latency, throughput, etc.) are saved.
+- `stats_out`: File where final statistics (average latency, throughput, etc.) are saved. The statistics collection and reporting logic is defined in [TrafficManager::WriteStats](../../booksim/src/trafficmanager.cpp#L1801).
 - **Detailed Flow Tracking** (if compiled with `TRACK_FLOWS`):
   - `injected_flits_out`
   - `received_flits_out`
