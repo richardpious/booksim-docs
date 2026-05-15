@@ -51,4 +51,4 @@ This page provides a consolidated list of the most commonly used configuration p
 | `watch_out` | string | "" | Output file for watched flits. |
 
 ---
-*For a complete list of all parameters, refer to `src/booksim_config.cpp` in the source code.*
+*For a complete list of all parameters and their default values, refer to the [BookSimConfig](../../booksim/src/booksim_config.cpp#L38) constructor in the source code.*

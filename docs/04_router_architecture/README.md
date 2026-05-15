@@ -2,7 +2,7 @@
 
 The router is the core component of the network. BookSim provides a flexible router model with a configurable pipeline.
 
-## Default Router Model (`iq`)
+## Default Router Model ([iq_router.cpp](../../booksim/src/routers/iq_router.cpp#L50))
 
 The most common router model is the **Input-Queued (IQ)** router. It follows a standard pipeline:
 1. **BW (Buffer Write)**: Incoming flits are stored in input buffers.

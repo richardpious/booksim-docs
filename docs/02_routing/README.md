@@ -7,9 +7,9 @@ Routing algorithms determine the path taken by flits from source to destination.
 Routing functions are often topology-specific. The registration format in the source code is usually `rfname_topologyname`.
 
 ### Mesh Topologies
-- `dim_order` (XY Routing): Standard deterministic dimension-order routing.
-- `xy_yx`: Randomly chooses between XY and YX routing for each packet.
-- `adaptive_xy_yx`: Adaptively chooses between XY and YX based on congestion.
+- `dim_order` (XY Routing): Standard deterministic dimension-order routing. ([dim_order_mesh](../../booksim/src/routefunc.cpp#L643))
+- `xy_yx`: Randomly chooses between XY and YX routing for each packet. ([xy_yx_mesh](../../booksim/src/routefunc.cpp#L476))
+- `adaptive_xy_yx`: Adaptively chooses between XY and YX based on congestion. ([adaptive_xy_yx_mesh](../../booksim/src/routefunc.cpp#L404))
 - `west_first`, `north_last`, `negative_first`: Turn-model based partially adaptive routing.
 - `romm`: Randomized minimal routing.
 
@@ -18,7 +18,7 @@ Routing functions are often topology-specific. The registration format in the so
 - `min_adaptive`: Fully adaptive minimal routing.
 
 ### Tree Topologies
-- `nca`: Nearest Common Ancestor routing.
+- `nca`: Nearest Common Ancestor routing. ([qtree_nca](../../booksim/src/routefunc.cpp#L75))
 - `anca`: Adaptive Nearest Common Ancestor routing.
 
 ### Dragonfly Topologies
@@ -34,7 +34,7 @@ Routing functions are often topology-specific. The registration format in the so
 
 ## Implementation Details
 
-Routing functions are defined in `src/routefunc.cpp`. They take the current router and flit as input and populate an `OutputSet` with the valid output ports and virtual channels.
+Routing functions are defined in [routefunc.cpp](../../booksim/src/routefunc.cpp). They take the current router and flit as input and populate an `OutputSet` with the valid output ports and virtual channels.
 
 ```cpp
 void my_routing_func(const Router *r, const Flit *f, int in_channel, 
