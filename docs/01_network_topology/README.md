@@ -4,30 +4,30 @@ BookSim supports a variety of network topologies, ranging from standard regular 
 
 ## Available Topologies
 
-- **Mesh / Torus ([kncube.cpp](file:///home/dell/Documents/booksim-docs/booksim/src/networks/kncube.cpp))**:
+- **Mesh / Torus ([kncube.cpp](../../booksim/src/networks/kncube.cpp))**:
   - `k`: The radix (number of nodes per dimension).
   - `n`: The number of dimensions.
   - `c`: Concentration (number of nodes per router).
   - Example: `topology = mesh; k = 8; n = 2;` defines an 8x8 mesh.
 
-- **Concentrated Mesh ([cmesh.cpp](file:///home/dell/Documents/booksim-docs/booksim/src/networks/cmesh.cpp))**:
+- **Concentrated Mesh ([cmesh.cpp](../../booksim/src/networks/cmesh.cpp))**:
   - A mesh with multiple nodes per router, often used for on-chip networks.
   - Supports additional layout parameters like `x`, `y` for router placement.
 
-- **Fat-Tree ([fattree.cpp](file:///home/dell/Documents/booksim-docs/booksim/src/networks/fattree.cpp))**:
+- **Fat-Tree ([fattree.cpp](../../booksim/src/networks/fattree.cpp))**:
   - A hierarchical tree structure.
   - Parameters: `k` (radix), `n` (height).
 
-- **Dragonfly ([dragonfly.cpp](file:///home/dell/Documents/booksim-docs/booksim/src/networks/dragonfly.cpp))**:
+- **Dragonfly ([dragonfly.cpp](../../booksim/src/networks/dragonfly.cpp))**:
   - A high-radix topology with groups of routers.
 
-- **Butterfly ([fly.cpp](file:///home/dell/Documents/booksim-docs/booksim/src/networks/fly.cpp))**:
+- **Butterfly ([fly.cpp](../../booksim/src/networks/fly.cpp))**:
   - A multi-stage interconnection network.
 
 - **Clos Network**:
   - Specialized multi-stage topology.
 
-- **Arbitrary Networks ([anynet.cpp](file:///home/dell/Documents/booksim-docs/booksim/src/networks/anynet.cpp))**:
+- **Arbitrary Networks ([anynet.cpp](../../booksim/src/networks/anynet.cpp))**:
   - Allows defining custom topologies via a text file.
   - Parameter: `network_file`.
 
