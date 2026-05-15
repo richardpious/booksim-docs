@@ -1,6 +1,6 @@
-# BookSim Documentation & Research Repository
+# BookSim Documentation
 
-Documentation, architecture notes, tracing formats, and experimental analysis for BookSim.
+Documentation, architecture notes and tracing formats  for BookSim.
 
 ---
 
@@ -50,4 +50,4 @@ Pages also link to exact implementation lines for easier navigation.
 
 ## Related Resources
 
-- BookSim simulator official repository is available at [BookSim official repository](https://github.com/booksim/booksim2)
+- BookSim simulator official repository is available [here](https://github.com/booksim/booksim2).
