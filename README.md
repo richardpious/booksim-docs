@@ -1,10 +1,10 @@
 # BookSim Documentation
 
-Documentation, architecture notes and tracing formats  for BookSim.
+Unofficial documentation, architecture notes and tracing formats  for BookSim.
 
 ---
 
-## Repository Goals
+## Goals
 
 This repository aims to:
 
@@ -31,19 +31,6 @@ Main documentation index:
 
 ➡️ [Open Documentation Index](docs/index.md)
 
----
-
-## Codebase Integration
-
-Documentation pages directly reference BookSim source files and implementation locations.
-
-Example:
-
-```text
-booksim/src/routers/iq_router.cpp
-```
-
-Pages also link to exact implementation lines for easier navigation.
 
 ---
 
