@@ -31,16 +31,12 @@ Each line in the output file represents a single simulation cycle. The line cont
 
 The exact sequence of columns written to each line is structured as follows:
 
-1. **For each Subnetwork $s \in \{0, \dots, \text{subnets}-1\}$**:
-   - **Terminal Injection VC Buffers**: For each terminal node $n \in \{0, \dots, \text{nodes}-1\}$, we print the status of all $V$ virtual channels.
-     - E.g., Node 0 VCs (0 to $V-1$), Node 1 VCs (0 to $V-1$), ..., Node $N-1$ VCs (0 to $V-1$).
-     - (Total columns: $N \times V$)
-   - **Router Output VC Buffers**: For each router $r \in \{0, \dots, \text{routers}-1\}$, we print the status of all $V$ virtual channels on all $O$ output ports.
-     - E.g., Router 0 [Port 0 VCs (0 to $V-1$), Port 1 VCs (0 to $V-1$), ..., Port $O-1$ VCs (0 to $V-1$)].
-     - Router 1 [Port 0 VCs (0 to $V-1$), ..., Port $O-1$ VCs (0 to $V-1$)].
-     - ...
-     - Router $R-1$ [Port 0 VCs, ..., Port $O-1$ VCs].
-     - (Total columns: $R \times O \times V$)
+1. **For each Subnetwork $s$**:
+   - **Terminal Injection VC Buffers** (Total columns: $\text{nodes} \times \text{vcs}$):
+     - Ordered by Node: **Node 0** (VCs $0 \dots V-1$), **Node 1** (VCs $0 \dots V-1$), $\dots$, **Node $N-1$** (VCs $0 \dots V-1$).
+   - **Router Output VC Buffers** (Total columns: $\text{routers} \times \text{outputs} \times \text{vcs}$):
+     - Ordered by Router: **Router 0**, then **Router 1**, $\dots$, up to **Router $R-1$**.
+     - Within each router, ordered by output ports: **Port 0** (VCs $0 \dots V-1$), **Port 1** (VCs $0 \dots V-1$), $\dots$, up to **Port $O-1$** (VCs $0 \dots V-1$).
 
 
 Consider the following network configuration:
