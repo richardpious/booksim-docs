@@ -28,7 +28,7 @@ You can track specific flits or packets as they move through the network.
   - [`outstanding_credits_out`](outstanding_credits.md)
   - [`active_packets_out`](active_packets.md)
 - **Detailed Credit Tracking** (if compiled with `TRACK_CREDITS`):
-  - [`used_credits_out`](used_credits_out.md) / [`free_credits_out`](used_credits_out.md) / [`max_credits_out`](used_credits_out.md)
+  - [`used_credits_out`](used_credits_out.md) / [`free_credits_out`](free_credits_out.md) / [`max_credits_out`](max_credits_out.md)
 
 ## Statistics Logging Frequency
 
@@ -46,7 +46,7 @@ All detailed flow tracking and credit tracking files append a new data snapshot 
 | [`stored_flits_out`](stored_flits.md) | **Instantaneous Snapshot** | The exact number of buffered flits occupying the input virtual channel queues at the precise cycle the snapshot is taken. |
 | [`outstanding_credits_out`](outstanding_credits.md) | **Instantaneous Snapshot** | Downstream credit availability tracking state at the precise snapshot cycle. |
 | [`active_packets_out`](active_packets.md) | **Instantaneous Snapshot** | Instantaneous number of active packets currently residing in router input queues. |
-| [`used_credits_out`](used_credits_out.md) / [`free_credits_out`](used_credits_out.md) / [`max_credits_out`](used_credits_out.md) | **Instantaneous Snapshot** | VC-level occupancy, availability, or max credit boundaries at terminal buffers and router output buffers. |
+| [`used_credits_out`](used_credits_out.md) / [`free_credits_out`](free_credits_out.md) / [`max_credits_out`](max_credits_out.md) | **Instantaneous Snapshot** | VC-level occupancy, availability, or max credit boundaries at terminal buffers and router output buffers. |
 
 ## Deadlock Detection
 
