@@ -2,7 +2,7 @@
 
 # outstanding_credits_out
 
-`outstanding_credits_out` is a configuration parameter that controls where BookSim logs cycle-by-cycle tracking of outstanding credits (downstream buffering allocations) at each terminal node injection interface and router output port. This is extremely valuable for auditing credit-based flow control behavior, finding credit-leak bugs, and assessing downstream queue occupancy.
+`outstanding_credits_out` is a configuration parameter that controls where BookSim logs cycle-by-cycle tracking of outstanding credits (downstream buffering allocations) at each terminal node injection interface and router output port.
 
 ## How to Use
 
@@ -39,7 +39,6 @@ The exact sequence of columns written to each line is structured as follows:
      - **Node Injection Credits**: $N$ integers (one per terminal node, representing the number of outstanding credits at the injection interface for Class $c$ in subnet $s$).
      - **Router Output Credits**: For each router $r \in \{0, \dots, \text{routers}-1\}$, $O$ integers (one per output port, representing the number of outstanding credits—flits sent downstream that have not received credit back—for Class $c$ in subnet $s$).
 
-### Concrete Column Example
 
 Consider the following network configuration:
 * `classes = 2` (Traffic Class 0 and Class 1)

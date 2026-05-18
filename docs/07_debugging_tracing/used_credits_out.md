@@ -2,7 +2,7 @@
 
 # used_credits_out / free_credits_out / max_credits_out
 
-`used_credits_out`, `free_credits_out`, and `max_credits_out` are configuration parameters that control where BookSim logs cycle-by-cycle virtual channel-level downstream buffering states. Unlike `outstanding_credits_out` (which measures port-level outstanding flits), these logging options provide high-resolution virtual channel-level queue capacity diagnostics across all nodes and routers.
+`used_credits_out`, `free_credits_out`, and `max_credits_out` are configuration parameters that control where BookSim logs cycle-by-cycle virtual channel-level downstream buffering states. Unlike `outstanding_credits_out` (which measures port-level outstanding flits), these logging options provide more detailed virtual channel-level data.
 
 ## How to Use
 
@@ -44,7 +44,6 @@ The exact sequence of columns written to each line is structured as follows:
      - Router $R-1$ [Port 0 VCs, ..., Port $O-1$ VCs].
      - (Total columns: $R \times O \times V$)
 
-### Concrete Column Example
 
 Consider the following network configuration:
 * `subnets = 1`

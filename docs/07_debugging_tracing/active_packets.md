@@ -2,7 +2,7 @@
 
 # active_packets_out
 
-`active_packets_out` is a configuration parameter that controls where BookSim logs cycle-by-cycle tracking of the instantaneous count of active packets residing in each router's input queues. This is valuable for tracing active packet lifecycles, measuring routing delays, and analyzing temporal queue congestion.
+`active_packets_out` is a configuration parameter that controls where BookSim logs cycle-by-cycle tracking of the instantaneous count of active packets residing in each router's input queues.
 
 ## How to Use
 
@@ -41,7 +41,6 @@ The exact sequence of columns written to each line is structured as follows:
 
 *Note: The active packet count is incremented by 1 when a packet's head flit enters the router buffer, and decremented by 1 when the packet's tail flit traverses the crossbar switch and exits.*
 
-### Concrete Column Example
 
 Consider the following network configuration:
 * `classes = 2` (Traffic Class 0 and Class 1)
