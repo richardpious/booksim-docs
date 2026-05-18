@@ -1,10 +1,7 @@
 # Index
 
-This documentation is organized by subsystem and simulator functionality.
 
 ---
-
-# Sections
 
 ## 1. [Running Simulations](01_running_simulations/README.md)
 
@@ -30,21 +27,21 @@ Router pipeline and allocator internals.
 
 
 
-## 5. [Traffic & Injection](05_traffic_injection/README.md)
+## 5. [Routing](05_routing/README.md)
 
-Traffic generation and injection models.
+Routing algorithms and routing-related parameters.
 
 
 
-## 6. [Flow Control & Buffers](03_flow_control_buffers/README.md)
+## 6. [Flow Control & Buffers](06_flow_control_buffers/README.md)
 
 Virtual channels, buffering, and credit flow.
 
 
 
-## 7. [Routing](07_routing/README.md)
+## 7. [Traffic & Injection](07_traffic_injection/README.md)
 
-Routing algorithms and routing-related parameters.
+Traffic generation and injection models.
 
 
 
