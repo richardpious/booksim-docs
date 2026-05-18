@@ -1,3 +1,5 @@
+[<- Previous Page](../06_simulation_control/README.md) | [Index](../index.md)
+
 # Debugging and Tracing
 
 BookSim provides several tools for monitoring the state of the network and debugging performance issues.

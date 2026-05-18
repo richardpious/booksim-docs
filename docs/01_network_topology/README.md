@@ -1,3 +1,5 @@
+[Index](../index.md)
+
 # Network Topology
 
 BookSim supports a variety of network topologies, ranging from standard regular structures to custom arbitrary graphs. The topology is selected using the `topology` parameter in the configuration file.

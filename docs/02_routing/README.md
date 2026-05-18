@@ -1,3 +1,5 @@
+[<- Previous Page](../01_network_topology/README.md) | [Index](../index.md)
+
 # Routing Algorithms
 
 Routing algorithms determine the path taken by flits from source to destination. In BookSim, routing is configured using the `routing_function` parameter.

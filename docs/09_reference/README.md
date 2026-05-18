@@ -1,4 +1,6 @@
-# Configuration Reference
+[<- Previous Page](../08_power_analysis/README.md) | [Index](../index.md)
+
+# Configuration Parameters
 
 This page provides a consolidated list of the most commonly used configuration parameters in BookSim.
 

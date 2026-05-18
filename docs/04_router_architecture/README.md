@@ -1,3 +1,5 @@
+[<- Previous Page](../03_flow_control_buffers/README.md) | [Index](../index.md)
+
 # Router Architecture
 
 The router is the core component of the network. BookSim provides a flexible router model with a configurable pipeline.

@@ -1,3 +1,5 @@
+[<- Previous Page](../04_router_architecture/README.md) | [Index](../index.md)
+
 # Traffic Injection
 
 Traffic injection defines how and when packets are introduced into the network by the source nodes.

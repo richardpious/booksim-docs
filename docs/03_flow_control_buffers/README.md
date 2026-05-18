@@ -1,3 +1,5 @@
+[<- Previous Page](../02_routing/README.md) | [Index](../index.md)
+
 # Flow Control and Buffers
 
 BookSim uses credit-based flow control to manage buffer space and prevent overflow. Virtual channels (VCs) are used to multiplex physical links and avoid deadlocks.

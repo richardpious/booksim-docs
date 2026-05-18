@@ -1,3 +1,5 @@
+[<- Previous Page](../07_debugging_tracing/README.md) | [Index](../index.md)
+
 # Power Analysis
 
 BookSim includes a power model that estimates the power and area consumption of the network based on the technology parameters and the activity recorded during simulation. The power analysis is orchestrated by the [PowerModule](../../booksim/src/power/power_module.cpp#L34).

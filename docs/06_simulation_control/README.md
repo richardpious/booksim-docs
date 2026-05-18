@@ -1,3 +1,5 @@
+[<-Previous Page](../05_traffic_injection/README.md) | [Index](../index.md)
+
 # Simulation Control
 
 Simulation control parameters determine how long a simulation runs and how statistics are collected. The core simulation logic is handled by the [TrafficManager](../../booksim/src/trafficmanager.cpp#L58).
