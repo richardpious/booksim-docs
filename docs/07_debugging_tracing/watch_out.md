@@ -16,20 +16,20 @@ To tell BookSim which packets or flits to track, configure one of the following 
 
 ```
 # Track specific flits by their IDs
-watch_flits = 1234, 5678
+watch_flits = {1234, 5678}
 
 # Track specific packets by their IDs
-watch_packets = 99
+watch_packets = {99}
 
 # OR load a line-separated watchlist file containing IDs
 watch_file = watchlist.txt
 ```
 
-*Note: In the `watch_file`, prefixing an ID with `p` tracks a packet (e.g. `p99`), whereas a plain number tracks a flit (e.g. `1234`).*
+*Note: In `watch_file.txt`, prefixing an ID with `p` tracks a packet (e.g. `p99`), whereas a plain number tracks a flit (e.g. `1234`).*
 
 ## Output Format
 
-When tracking is active, BookSim will log high-resolution hardware state transitions. Each logged event is written on its own line using a pipe-delimited format:
+When tracking is active, BookSim will log detailed cycle-by-cycle state transitions. Each logged event is written on its own line using a pipe-delimited format:
 
 ```
 35 | router_0_0 | Received flit 1234 from channel at input 2.
@@ -50,7 +50,7 @@ When tracking is active, BookSim will log high-resolution hardware state transit
 
 Each logged line contains three pipe-delimited (`|`) columns:
 
-$$\text{Simulation Cycle} \;\;|\;\; \text{Component Name} \;\;|\;\; \text{Log/Activity Message}$$
+$$\text{Simulation Cycle} | \text{Component Name} | \text{Log/Activity Message}$$
 
 ### 1. Simulation Cycle / Time
 The first column indicates the exact simulation step (in cycles) at which the hardware-level event occurred.

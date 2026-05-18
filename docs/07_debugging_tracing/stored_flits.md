@@ -48,13 +48,13 @@ Each line in the file will contain exactly $2 \times 1 \times (4 + (4 \times 5))
 
 | Columns | Traffic Class | Subnet | Component / Buffer Description |
 | :--- | :---: | :---: | :--- |
-|  1 - 4 | Class 0 | Subnet 0 | Dummy terminal injection queues (always `0`) |
-|  5 - 9 | Class 0 | Subnet 0 | Router 0, Input Ports 0 to 4 occupancy |
-|  10 - 14 | Class 0 | Subnet 0 | Router 1, Input Ports 0 to 4 occupancy |
-|  15 - 19 | Class 0 | Subnet 0 | Router 2, Input Ports 0 to 4 occupancy |
-|  20 - 24 | Class 0 | Subnet 0 | Router 3, Input Ports 0 to 4 occupancy |
-|  25 - 28 | Class 1 | Subnet 0 | Dummy terminal injection queues (always `0`) |
-|  29 - 33 | Class 1 | Subnet 0 | Router 0, Input Ports 0 to 4 occupancy |
-|  34 - 38 | Class 1 | Subnet 0 | Router 1, Input Ports 0 to 4 occupancy |
-|  39 - 43 | Class 1 | Subnet 0 | Router 2, Input Ports 0 to 4 occupancy |
-|  44 - 48 | Class 1 | Subnet 0 | Router 3, Input Ports 0 to 4 occupancy |
+|  1 - 4 | 0 | 0 | Dummy terminal injection queues (always `0`) |
+|  5 - 9 | 0 | 0 | Router 0, Input Ports 0 to 4 occupancy |
+|  10 - 14 | 0 | 0 | Router 1, Input Ports 0 to 4 occupancy |
+|  15 - 19 | 0 | 0 | Router 2, Input Ports 0 to 4 occupancy |
+|  20 - 24 | 0 | 0 | Router 3, Input Ports 0 to 4 occupancy |
+|  25 - 28 | 1 | 0 | Dummy terminal injection queues (always `0`) |
+|  29 - 33 | 1 | 0 | Router 0, Input Ports 0 to 4 occupancy |
+|  34 - 38 | 1 | 0 | Router 1, Input Ports 0 to 4 occupancy |
+|  39 - 43 | 1 | 0 | Router 2, Input Ports 0 to 4 occupancy |
+|  44 - 48 | 1 | 0 | Router 3, Input Ports 0 to 4 occupancy |
