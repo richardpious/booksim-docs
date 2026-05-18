@@ -54,10 +54,10 @@ Inputs=5Outputs=5[0 -> 0] 0:0 1:0
 ```
 
 Where:
-- `router_0_0.bufferMonitor:` -  the monitor associated with router 0,0
+- `router_0_0.bufferMonitor:` -  the buffer monitor associated with router 0,0
 - `[ 0 ]` - the input port number
 - `Type=0:(R#1145,W#1145)` - Type=0 represents the 0th traffic class. `R#1145` is the number of reads from the input buffer and `W#1145` is the number of writes to the output buffer.
-- `router_0_0.switchMonitor:` - the crossbar switch associated with router 0,0
+- `router_0_0.switchMonitor:` - the crossbar switch monitor associated with router 0,0
 - `Inputs=5Outputs=5` - the number of input and output ports
 - `[0 -> 0]` - the crossbar switch connecting input port number 0 to output port number 0
 - `0:0 1:0` - the number of traversals from the input port to the output port for each traffic class (Type 0 and Type 1)
