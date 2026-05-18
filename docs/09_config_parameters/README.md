@@ -105,4 +105,4 @@ This page provides a consolidated list of the most commonly used configuration p
 | `power_output_file`| string | `pwr_tmp` | File to save power analysis results. |
 
 ---
-*For a complete list of all parameters and their default values, refer to the [BookSimConfig](../../booksim/src/booksim_config.cpp#L38) constructor in the source code.*
+*For a complete list of all parameters and their default values, refer to the [BookSimConfig](../../booksim/src/booksim_config.cpp#L38) file.*
