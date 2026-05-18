@@ -6,13 +6,13 @@ This documentation is organized by subsystem and simulator functionality.
 
 # Sections
 
-## 1. [Running Simulations](06_running_simulations/README.md)
+## 1. [Running Simulations](01_running_simulations/README.md)
 
 Overview of running simulations.
 
 
 
-## 2. [Logging & Tracing](07_logging_tracing/README.md)
+## 2. [Logging & Tracing](02_logging_tracing/README.md)
 
 Tracing infrastructure and debug outputs.
 
@@ -36,13 +36,13 @@ Traffic generation and injection models.
 
 
 
-## 6. [Network Topology](01_network_topology/README.md)
+## 6. [Network Topology](06_network_topology/README.md)
 
 Documentation related to network structure and topology generation.
 
 
 
-## 7. [Routing](02_routing/README.md)
+## 7. [Routing](07_routing/README.md)
 
 Routing algorithms and routing-related parameters.
 
