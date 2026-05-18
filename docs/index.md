@@ -38,9 +38,9 @@ Traffic generation and injection models.
 
 
 
-## 6. [Simulation Control](06_simulation_control/README.md)
+## 6. [Running Simulations](06_running_simulations/README.md)
 
-Simulation execution and convergence behavior.
+Overview of running simulations.
 
 
 
