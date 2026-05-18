@@ -1,71 +1,65 @@
 [<- Topology Index](README.md)
 
-# Fat-Tree In-Depth Topology Guide
+# Fat-Tree Topology
 
-The Fat-Tree hierarchical indirect network features multiple stages of switches designed to provide high bisection bandwidth. In BookSim, this is implemented in the [FatTree](../../booksim/src/networks/fattree.cpp#L58) class inside [fattree.cpp](../../booksim/src/networks/fattree.cpp).
+The Fat-Tree is a hierarchical multi-stage indirect network that provides high bisection bandwidth. It is implemented in the [FatTree](../../booksim/src/networks/fattree.cpp#L58) class inside [fattree.cpp](../../booksim/src/networks/fattree.cpp).
 
 ---
 
-## 1. Grid Sizing & Parameters
+## 1. Parameters & Tree Sizing
 
-The topology size is configured by two variables:
--   `k` (`_k`): Radix (number of child links per router).
--   `n` (`_n`): Levels/height of the tree.
+-   **`k` (`_k`)**: Radix (number of descending child links per router).
+-   **`n` (`_n`)**: Level count (tree height).
 
-### Sizing Formulas (`_ComputeSize`)
--   **Total Nodes (`_nodes`)**: `powi(_k, _n)`
--   **Total Switches (`_size`)**: `_n * powi(_k, _n - 1)` (composed of `_n` levels with `powi(_k, _n - 1)` switches per level).
--   **Total Inter-Router Channels (`_channels`)**:
+### 1.1 Sizing Formulas (`_ComputeSize`)
+-   **Total Terminals (`_nodes`)**: `powi(_k, _n)`
+-   **Total Switches (`_size`)**: `_n * powi(_k, _n - 1)`
+-   **Total Inter-router Channels (`_channels`)**:
     ```cpp
-    _channels = (2 * _k * powi( _k , _n - 1 )) * (_n - 1);
+    _channels = (2 * _k * powi(_k, _n - 1)) * (_n - 1);
     ```
 
 ---
 
-## 2. In-Depth Network Building (`_BuildNet`)
+## 2. Network Construction (`_BuildNet`)
 
-The [_BuildNet](../../booksim/src/networks/fattree.cpp#L93) method builds the hierarchical tree structure layer-by-layer:
+The [_BuildNet](../../booksim/src/networks/fattree.cpp#L93) method allocates switches level-by-level and connects hierarchical parent-child stages.
 
-```text
-                     Fat-Tree Hierarchical Structure
-                         [Level 0: Root] (Degree k)
-                             //        \\
-                       [Level 1: Middle] (Degree 2k)
-                       //              \\
-                     [Level 2: Leaf] (Degree 2k)
-                     //   \\          //   \\
-                 [Node 0] [Node 1] [Node 2] [Node 3] (Processor Nodes)
-```
-
-### Step 2.1: Switch Allocation by Level
-The builder loops through all stages `level` from `0` to `_n - 1` to allocate switches. The topmost root level has no upward parent links, meaning its router degree is smaller than intermediate/bottom levels:
--   **Root Switches (`level == 0`)**: Sized with degree `_k`.
--   **Other Switches (`level > 0`)**: Sized with degree `2 * _k` (to support `_k` downward and `_k` upward ports).
+### 2.1 Switch Allocation by Level
+Switches are organized in levels from `0` (root) to `_n - 1` (leaves). Router degrees differ depending on their position in the hierarchy:
+-   **Root Switches (`level == 0`)**: Sized with degree `_k` (only downward links).
+-   **Middle & Leaf Switches (`level > 0`)**: Sized with degree `2 * _k` (supporting `_k` upward and `_k` downward links).
 ```cpp
 _routers[id] = Router::NewRouter( config, this, name.str( ), id, degree, degree );
 ```
 
-### Step 2.2: Port Connection Rules
-The builder maps input and output channels to switches based on a strict spatial routing rule:
--   **Output ports $< k$**: Move DOWN the tree (toward the leaf level).
--   **Output ports $\ge k$**: Move UP the tree (toward the root level).
+### 2.2 Directional Port Rules
+Ports are partitioned according to their physical routing direction:
+-   **Output ports $< k$**: Move DOWN the tree (toward leaves).
+-   **Output ports $\ge k$**: Move UP the tree (toward roots).
 -   **Input ports $< k$**: Receive flits from switches DOWN the tree.
 -   **Input ports $\ge k$**: Receive flits from switches UP the tree.
 
-### Step 2.3: Leaf concentration links (Bottom Stage)
-The leaf routers (level `_n - 1`) connect their downward-facing ports ($0$ to $k-1$) directly to the terminal node injection/ejection channels, configured with a latency of **1 cycle**:
+### 2.3 Leaf concentration links (Bottom Stage)
+The leaf routers (level `_n - 1`) connect downward-facing ports $0$ to $k-1$ directly to processor injection and ejection channels. These boundary links have a default latency of **1 cycle**:
 ```cpp
 _Router( _n-1, pos)->AddInputChannel( _inject[link], _inject_cred[link] );
 _Router( _n-1, pos)->AddOutputChannel( _eject[link], _eject_cred[link] );
 ```
 
-### Step 2.4: Middle Stage Inter-Router Interconnections
-The builder binds up and down channels to mid-level switches sequentially:
--   **Downward Outputs** (levels $0$ to $n-2$): Sized as `link = (level * chan_per_level) + pos * _k + port`.
--   **Upward Outputs** (levels $1$ to $n-1$): Sized as `link = (level * chan_per_level - chan_per_direction) + pos * _k + port`.
+### 2.4 Middle Stage Inter-Router Wires
+Inter-stage outgoing channels are registered sequentially:
+-   **Downward Outputs** (levels $0$ to $n-2$):
+    ```cpp
+    link = (level * chan_per_level) + pos * _k + port;
+    ```
+-   **Upward Outputs** (levels $1$ to $n-1$):
+    ```cpp
+    link = (level * chan_per_level - chan_per_direction) + pos * _k + port;
+    ```
 
-### Step 2.5: Interleaved Input Bindings
-To connect branches properly and avoid network structural conflicts, inputs are bound to ports using interleaving formulas. The interleaving delta varies based on the current level:
+### 2.5 Mathematical Branch Interleaving
+Downward and upward input channels are mapped to ports using a mathematical interleaving step to resolve parent-child branches:
 -   **Downward Inputs**:
     ```cpp
     int routers_per_neighborhood = powi(_k, _n-1-level); 
@@ -73,4 +67,3 @@ To connect branches properly and avoid network structural conflicts, inputs are 
     int level_offset = routers_per_neighborhood * _k;
     int link = ((level+1) * chan_per_level - chan_per_direction) + neighborhood * level_offset + port * routers_per_branch * gK + (neighborhood_pos) % routers_per_branch * gK + (neighborhood_pos) / routers_per_branch;
     ```
--   **Upward Inputs**: Wired similarly using adjacent level offsets. This mathematical interleaving creates the high-bisection routing fabric characteristic of Fat-Trees.

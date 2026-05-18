@@ -56,7 +56,7 @@ When `use_noc_latency = 1` is configured, BookSim overrides simple single-cycle 
 - **Inter-Router Links**: Channel latencies are scaled proportionally to the Manhattan distance between the source and destination switch coordinates in the virtual 2D grid.
 
 ### Hidden/Hardcoded Latencies
-Be aware that certain topologies have hardcoded physical latency values embedded directly in their source implementations:
+Certain topologies have hardcoded physical latency values embedded directly in their source implementations:
 - **Dragonfly (`dragonflynew`)**: In [dragonfly.cpp](../../booksim/src/networks/dragonfly.cpp#L283-L300), inter-switch channels have specific latencies built-in (active when the `DRAGON_LATENCY` macro is defined):
   - **Intra-group** local links: **10 cycles** latency.
   - **Inter-group** optical links: **100 cycles** latency.
