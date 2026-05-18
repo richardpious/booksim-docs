@@ -17,6 +17,19 @@ You can track specific flits or packets as they move through the network.
 - `watch_flits`, `watch_packets`: Direct specification of IDs to watch.
 - `watch_out`: The file where watch information is logged.
 
+
+## Example Usage
+
+To watch a specific flit ID 1234 and output to `debug.txt`:
+```
+watch_flits = 1234
+watch_out = debug.txt
+```
+To print activity for performance analysis:
+```
+print_activity = 1
+```
+
 ## Statistics and Output Files
 
 - `[stats_out](stats_out.md)`: File where final statistics (average latency, throughput, etc.) are saved. The statistics collection and reporting logic is defined in [TrafficManager::WriteStats](../../booksim/src/trafficmanager.cpp#L1801).
@@ -47,21 +60,4 @@ All detailed flow tracking and credit tracking files append a new data snapshot 
 | [`outstanding_credits_out`](outstanding_credits.md) | **Instantaneous Snapshot** | Downstream credit availability tracking state at the precise snapshot cycle. |
 | [`active_packets_out`](active_packets.md) | **Instantaneous Snapshot** | Instantaneous number of active packets currently residing in router input queues. |
 | [`used_credits_out`](used_credits_out.md) / [`free_credits_out`](free_credits_out.md) / [`max_credits_out`](max_credits_out.md) | **Instantaneous Snapshot** | VC-level occupancy, availability, or max credit boundaries at terminal buffers and router output buffers. |
-
-## Deadlock Detection
-
-- `deadlock_warn_timeout`: Number of cycles a flit can be stalled before a deadlock warning is issued.
-
-## Example Usage
-
-To watch a specific flit ID 1234 and output to `debug.txt`:
-```
-watch_flits = 1234
-watch_out = debug.txt
-```
-To print activity for performance analysis:
-```
-print_activity = 1
-```
-
 
