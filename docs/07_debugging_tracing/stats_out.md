@@ -4,6 +4,8 @@
 
 `stats_out` is a configuration parameter that controls where BookSim logs the final, aggregated simulation statistics. BookSim outputs these stats in a MATLAB-compatible format (using `%` for comments and standard semicolon `;` array assignments). This allows developers to directly run or load the output file as a MATLAB/Octave script to plot results or run post-processing analytics.
 
+The files contains all the parameter values that were used to run the simulation, pulled from the input file.
+
 ## How to Use
 
 Set `stats_out` in your BookSim configuration file to a target filename:
