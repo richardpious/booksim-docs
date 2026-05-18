@@ -1,8 +1,8 @@
 [<- Previous Page](../07_debugging_tracing/README.md) | [Index](../index.md)
 
-# injected_flits_out & ejected_flits_out
+# injected_flits_out / ejected_flits_out
 
-`injected_flits_out` and `ejected_flits_out` are configuration parameters that control where BookSim logs detailed, cycle-by-cycle flit injection and ejection counts at the terminal node boundaries. These files are essential for graphing source generation workloads, profiling destination egress patterns, and observing spatial injection variations over time.
+`injected_flits_out` and `ejected_flits_out` are  parameters that control where BookSim logs cycle-by-cycle flit injection and ejection counts at the terminal node boundaries.
 
 ## How to Use
 

@@ -1,8 +1,8 @@
 [<- Previous Page](../07_debugging_tracing/README.md) | [Index](../index.md)
 
-# sent_flits_out & received_flits_out
+# sent_flits_out / received_flits_out
 
-`sent_flits_out` and `received_flits_out` are configuration parameters that control where BookSim logs detailed, cycle-by-cycle flit transmission and arrival statistics for all input and output ports of every router in the network. These logs are highly useful for analyzing port-level traffic hotspots, tracking active channel usage, and auditing spatial load balancing.
+`sent_flits_out` and `received_flits_out` are parameters that control where BookSim logs cycle-by-cycle flit transmission and arrival statistics for all input and output ports of every router in the network.
 
 ## How to Use
 
