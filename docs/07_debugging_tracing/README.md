@@ -21,14 +21,14 @@ You can track specific flits or packets as they move through the network.
 
 - `[stats_out](stats_out.md)`: File where final statistics (average latency, throughput, etc.) are saved. The statistics collection and reporting logic is defined in [TrafficManager::WriteStats](../../booksim/src/trafficmanager.cpp#L1801).
 - **Detailed Flow Tracking** (if compiled with `TRACK_FLOWS`):
-  - [`injected_flits_out`] / [`ejected_flits_out`]
-  - [`received_flits_out`]
-  - [`stored_flits_out`]
-  - [`sent_flits_out`]
-  - [`outstanding_credits_out`]
-  - [`active_packets_out`]
+  - [`injected_flits_out`](injected_ejected_flits.md) / [`ejected_flits_out`](injected_ejected_flits.md)
+  - [`received_flits_out`](sent_received_flits.md)
+  - [`stored_flits_out`](stored_flits.md)
+  - [`sent_flits_out`](sent_received_flits.md)
+  - [`outstanding_credits_out`](outstanding_credits.md)
+  - [`active_packets_out`](active_packets.md)
 - **Detailed Credit Tracking** (if compiled with `TRACK_CREDITS`):
-  - [`used_credits_out`] / [`free_credits_out`] / [`max_credits_out`]
+  - [`used_credits_out`](used_credits_out.md) / [`free_credits_out`](used_credits_out.md) / [`max_credits_out`](used_credits_out.md)
 
 ## Statistics Logging Frequency
 
@@ -41,12 +41,12 @@ All detailed flow tracking and credit tracking files append a new data snapshot 
 
 | File Configuration | Format | Description |
 | :--- | :--- | :--- |
-| [`injected_flits_out`] / [`ejected_flits_out`] | **Cumulative Counts** | Total number of flits injected/ejected at terminal interfaces during the last `sample_period` cycles. Resets to `0` after writing. |
-| [`received_flits_out`] / [`sent_flits_out`] | **Cumulative Counts** | Total number of flits received/sent at individual router ports during the last `sample_period` cycles. Resets to `0` after writing. |
-| [`stored_flits_out`] | **Instantaneous Snapshot** | The exact number of buffered flits occupying the input virtual channel queues at the precise cycle the snapshot is taken. |
-| [`outstanding_credits_out`] | **Instantaneous Snapshot** | Downstream credit availability tracking state at the precise snapshot cycle. |
-| [`active_packets_out`] | **Instantaneous Snapshot** | Instantaneous number of active packets currently residing in router input queues. |
-| [`used_credits_out`] / [`free_credits_out`] / [`max_credits_out`] | **Instantaneous Snapshot** | VC-level occupancy, availability, or max credit boundaries at terminal buffers and router output buffers. |
+| [`injected_flits_out`](injected_ejected_flits.md) / [`ejected_flits_out`](injected_ejected_flits.md) | **Cumulative Counts** | Total number of flits injected/ejected at terminal interfaces during the last `sample_period` cycles. Resets to `0` after writing. |
+| [`received_flits_out`](sent_received_flits.md) / [`sent_flits_out`](sent_received_flits.md) | **Cumulative Counts** | Total number of flits received/sent at individual router ports during the last `sample_period` cycles. Resets to `0` after writing. |
+| [`stored_flits_out`](stored_flits.md) | **Instantaneous Snapshot** | The exact number of buffered flits occupying the input virtual channel queues at the precise cycle the snapshot is taken. |
+| [`outstanding_credits_out`](outstanding_credits.md) | **Instantaneous Snapshot** | Downstream credit availability tracking state at the precise snapshot cycle. |
+| [`active_packets_out`](active_packets.md) | **Instantaneous Snapshot** | Instantaneous number of active packets currently residing in router input queues. |
+| [`used_credits_out`](used_credits_out.md) / [`free_credits_out`](used_credits_out.md) / [`max_credits_out`](used_credits_out.md) | **Instantaneous Snapshot** | VC-level occupancy, availability, or max credit boundaries at terminal buffers and router output buffers. |
 
 ## Deadlock Detection
 
@@ -64,14 +64,4 @@ To print activity for performance analysis:
 print_activity = 1
 ```
 
-[injected_flits_out]: injected_ejected_flits.md
-[ejected_flits_out]: injected_ejected_flits.md
-[received_flits_out]: sent_received_flits.md
-[stored_flits_out]: stored_flits.md
-[sent_flits_out]: sent_received_flits.md
-[outstanding_credits_out]: outstanding_credits.md
-[active_packets_out]: active_packets.md
-[used_credits_out]: used_credits_out.md
-[free_credits_out]: used_credits_out.md
-[max_credits_out]: used_credits_out.md
 
