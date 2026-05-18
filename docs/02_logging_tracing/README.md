@@ -1,8 +1,8 @@
-[<- Previous Page](../06_simulation_control/README.md) | [Index](../index.md)
+[<- Previous Page](../01_running_simulations/README.md) | [Index](../index.md)
 
-# Debugging and Tracing
+# Logging and Tracing
 
-BookSim provides several tools for monitoring the state of the network and debugging performance issues.
+BookSim provides several tools for logging and tracing network traffic and performance.
 
 ## Activity Monitoring
 
@@ -35,9 +35,8 @@ print_activity = 1
 - `[stats_out](stats_out.md)`: File where final statistics (average latency, throughput, etc.) are saved. The statistics collection and reporting logic is defined in [TrafficManager::WriteStats](../../booksim/src/trafficmanager.cpp#L1801).
 - **Detailed Flow Tracking** (if compiled with `TRACK_FLOWS`):
   - [`injected_flits_out`](injected_ejected_flits.md) / [`ejected_flits_out`](injected_ejected_flits.md)
-  - [`received_flits_out`](sent_received_flits.md)
+  - [`received_flits_out`](sent_received_flits.md) / [`sent_flits_out`](sent_received_flits.md)
   - [`stored_flits_out`](stored_flits.md)
-  - [`sent_flits_out`](sent_received_flits.md)
   - [`outstanding_credits_out`](outstanding_credits.md)
   - [`active_packets_out`](active_packets.md)
 - **Detailed Credit Tracking** (if compiled with `TRACK_CREDITS`):

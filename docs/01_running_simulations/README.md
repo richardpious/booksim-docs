@@ -1,4 +1,4 @@
-[<- Previous Page](../05_traffic_injection/README.md) | [Index](../index.md)
+[<- Index](../index.md)
 
 # Running Simulations
 

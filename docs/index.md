@@ -18,9 +18,9 @@ Tracing infrastructure and debug outputs.
 
 
 
-## 3. [Flow Control & Buffers](03_flow_control_buffers/README.md)
+## 3. [Network Topology](03_network_topology/README.md)
 
-Virtual channels, buffering, and credit flow.
+Documentation related to network structure and topology generation.
 
 
 
@@ -36,9 +36,9 @@ Traffic generation and injection models.
 
 
 
-## 6. [Network Topology](06_network_topology/README.md)
+## 6. [Flow Control & Buffers](03_flow_control_buffers/README.md)
 
-Documentation related to network structure and topology generation.
+Virtual channels, buffering, and credit flow.
 
 
 
@@ -54,6 +54,6 @@ Power and wire modeling.
 
 
 
-## 9. [Reference](09_reference/README.md)
+## 9. [Configuration Parameters](09_config_parameters/README.md)
 
-Reference material and configuration walkthroughs.
+Configuration parameters and their meanings.
