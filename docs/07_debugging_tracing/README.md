@@ -21,11 +21,29 @@ You can track specific flits or packets as they move through the network.
 
 - `[stats_out](stats_out.md)`: File where final statistics (average latency, throughput, etc.) are saved. The statistics collection and reporting logic is defined in [TrafficManager::WriteStats](../../booksim/src/trafficmanager.cpp#L1801).
 - **Detailed Flow Tracking** (if compiled with `TRACK_FLOWS`):
-  - `[injected_flits_out](injected_ejected_flits.md)` / `[ejected_flits_out](injected_ejected_flits.md)`
-  - `[received_flits_out](sent_received_flits.md)`
-  - `[stored_flits_out](stored_flits.md)` (useful for buffer occupancy analysis)
-  - `[sent_flits_out](sent_received_flits.md)`
+  - `[injected_flits_out]` / `[ejected_flits_out]`
+  - `[received_flits_out]`
+  - `[stored_flits_out]`
+  - `[sent_flits_out]`
   - `outstanding_credits_out`
+
+## Statistics Logging Frequency
+
+All detailed flow tracking files append a new data snapshot line periodically at regular simulation intervals.
+
+* **Frequency Parameter**: The log update frequency is controlled by the `sample_period` parameter (defined in your BookSim configuration file, defaulting to `1000` cycles if not specified).
+* **Snapshot Nature**: Depending on the metric, the recorded snapshots are either **instantaneous states** at the end of the sample interval or **cumulative cycle-by-cycle counts** that are reset to zero after each write.
+
+### Snapshot Types per File
+
+| File Configuration | Snapshot Nature | Description |
+| :--- | :--- | :--- |
+| `[injected_flits_out]` / `[ejected_flits_out]` | **Cumulative Counts** | Total number of flits injected/ejected at terminal interfaces during the last `sample_period` cycles. Resets to `0` after writing. |
+| `[received_flits_out]` / `[sent_flits_out]` | **Cumulative Counts** | Total number of flits received/sent at individual router ports during the last `sample_period` cycles. Resets to `0` after writing. |
+| `[stored_flits_out]` | **Instantaneous Snapshot** | The exact number of buffered flits occupying the input virtual channel queues at the precise cycle the snapshot is taken. |
+| `outstanding_credits_out` | **Instantaneous Snapshot** | Downstream credit availability tracking state at the precise snapshot cycle. |
+| `[stats_out](stats_out.md)` | **Final Summary** | Does not log periodic snapshots. Writes a single comprehensive summary of aggregated metrics spanning the entire simulation at execution completion. |
+| `watch_out` | **Cycle-by-Cycle** | Does not log periodic snapshots. Emits detailed, real-time pipeline and allocation transitions at every individual simulation step for monitored IDs. |
 
 ## Deadlock Detection
 
@@ -42,3 +60,9 @@ To print activity for performance analysis:
 ```
 print_activity = 1
 ```
+
+[injected_flits_out]: injected_ejected_flits.md
+[ejected_flits_out]: injected_ejected_flits.md
+[received_flits_out]: sent_received_flits.md
+[stored_flits_out]: stored_flits.md
+[sent_flits_out]: sent_received_flits.md
