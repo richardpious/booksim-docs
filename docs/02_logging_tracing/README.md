@@ -32,7 +32,7 @@ print_activity = 1
 
 ## Statistics and Output Files
 
-- `[stats_out](stats_out.md)`: File where final statistics (average latency, throughput, etc.) are saved. The statistics collection and reporting logic is defined in [TrafficManager::WriteStats](../../booksim/src/trafficmanager.cpp#L1801).
+- [`stats_out`](stats_out.md): File where final statistics (average latency, throughput, etc.) are saved. The statistics collection and reporting logic is defined in [TrafficManager::WriteStats](../../booksim/src/trafficmanager.cpp#L1801).
 - **Detailed Flow Tracking** (if compiled with `TRACK_FLOWS`):
   - [`injected_flits_out`](injected_ejected_flits.md) / [`ejected_flits_out`](injected_ejected_flits.md)
   - [`received_flits_out`](sent_received_flits.md) / [`sent_flits_out`](sent_received_flits.md)
