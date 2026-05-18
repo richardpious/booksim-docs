@@ -31,19 +31,18 @@ You can track specific flits or packets as they move through the network.
 
 All detailed flow tracking files append a new data snapshot line periodically at regular simulation intervals.
 
-* **Frequency Parameter**: The log update frequency is controlled by the `sample_period` parameter (defined in your BookSim configuration file, defaulting to `1000` cycles if not specified).
-* **Snapshot Nature**: Depending on the metric, the recorded snapshots are either **instantaneous states** at the end of the sample interval or **cumulative cycle-by-cycle counts** that are reset to zero after each write.
+* **Parameter**: The log update frequency is controlled by the `sample_period` parameter (defined in your BookSim configuration file, defaulting to `1000` cycles if not specified).
+* **Snapshot Format**: Depending on the metric, the recorded snapshots are either **instantaneous states** at the end of the sample interval or **cumulative cycle-by-cycle counts** that are reset to zero after each write.
 
 ### Snapshot Types per File
 
-| File Configuration | Snapshot Nature | Description |
+| File Configuration | Format | Description |
 | :--- | :--- | :--- |
 | `[injected_flits_out]` / `[ejected_flits_out]` | **Cumulative Counts** | Total number of flits injected/ejected at terminal interfaces during the last `sample_period` cycles. Resets to `0` after writing. |
 | `[received_flits_out]` / `[sent_flits_out]` | **Cumulative Counts** | Total number of flits received/sent at individual router ports during the last `sample_period` cycles. Resets to `0` after writing. |
 | `[stored_flits_out]` | **Instantaneous Snapshot** | The exact number of buffered flits occupying the input virtual channel queues at the precise cycle the snapshot is taken. |
 | `outstanding_credits_out` | **Instantaneous Snapshot** | Downstream credit availability tracking state at the precise snapshot cycle. |
-| `[stats_out](stats_out.md)` | **Final Summary** | Does not log periodic snapshots. Writes a single comprehensive summary of aggregated metrics spanning the entire simulation at execution completion. |
-| `watch_out` | **Cycle-by-Cycle** | Does not log periodic snapshots. Emits detailed, real-time pipeline and allocation transitions at every individual simulation step for monitored IDs. |
+
 
 ## Deadlock Detection
 
