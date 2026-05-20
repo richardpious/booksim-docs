@@ -1905,6 +1905,7 @@ void TrafficManager::UpdateStats() {
     *_active_packets_out << "Cycle " << _time << ":";
   }
 #endif
+
   for (int c = 0; c < _classes; ++c) {
 #ifdef TRACK_FLOWS
     {
@@ -1944,6 +1945,7 @@ void TrafficManager::UpdateStats() {
         if (_active_packets_out) {
           *_active_packets_out << " [Class:" << c << " Subnet: " << subnet
                                << " Router" << router << ":";
+
           vector<int> const &ap = r->GetActivePackets(c);
           for (size_t i = 0; i < ap.size(); ++i) {
             *_active_packets_out << " " << ap[i];

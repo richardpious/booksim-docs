@@ -2,7 +2,7 @@
 
 # Fat-Tree Topology
 
-The Fat-Tree is a hierarchical multi-stage indirect network that provides high bisection bandwidth. It is implemented in the [FatTree](../../booksim/src/networks/fattree.cpp#L58) class inside [fattree.cpp](../../booksim/src/networks/fattree.cpp).
+The Fat-Tree is a hierarchical multi-stage indirect network that provides high bisection bandwidth. It is implemented in the [FatTree](../../booksim/src/networks/fattree.cpp) class.
 
 ---
 
@@ -11,59 +11,30 @@ The Fat-Tree is a hierarchical multi-stage indirect network that provides high b
 -   **`k` (`_k`)**: Radix (number of descending child links per router).
 -   **`n` (`_n`)**: Level count (tree height).
 
-### 1.1 Sizing Formulas (`_ComputeSize`)
+### 1.1 Sizing Formulas
 -   **Total Terminals (`_nodes`)**: `powi(_k, _n)`
 -   **Total Switches (`_size`)**: `_n * powi(_k, _n - 1)`
--   **Total Inter-router Channels (`_channels`)**:
-    ```cpp
-    _channels = (2 * _k * powi(_k, _n - 1)) * (_n - 1);
-    ```
+-   **Total Channels**: `(2 * _k * powi(_k, _n - 1)) * (_n - 1)`
 
 ---
 
 ## 2. Network Construction (`_BuildNet`)
 
-The [_BuildNet](../../booksim/src/networks/fattree.cpp#L93) method allocates switches level-by-level and connects hierarchical parent-child stages.
+The `_BuildNet` function creates the network by allocating routers level-by-level and establishing bidirectional connections up and down the tree.
 
-### 2.1 Switch Allocation by Level
-Switches are organized in levels from `0` (root) to `_n - 1` (leaves). Router degrees differ depending on their position in the hierarchy:
--   **Root Switches (`level == 0`)**: Sized with degree `_k` (only downward links).
--   **Middle & Leaf Switches (`level > 0`)**: Sized with degree `2 * _k` (supporting `_k` upward and `_k` downward links).
-```cpp
-_routers[id] = Router::NewRouter( config, this, name.str( ), id, degree, degree );
-```
+### 2.1 Router Allocation by Level
+The function loops over each level (`0` to `_n - 1`) and each position within the level. 
+- The root switches (`level == 0`) are allocated with a degree of `_k` since they only have downward links.
+- Middle and leaf switches are allocated with a degree of `2 * _k`, allowing `_k` links pointing down toward the leaves and `_k` links pointing up toward the root.
 
-### 2.2 Directional Port Rules
+### 2.2 Leaf Stage (Terminal) Wiring
+For the lowest level (`_n - 1`), the function loops over all router positions and their `_k` downward-facing ports. It connects injection and ejection channels from the terminal nodes to these ports, setting a latency of 1 cycle.
+
+### 2.3 Inter-Stage Channel Rules
 Ports are partitioned according to their physical routing direction:
--   **Output ports $< k$**: Move DOWN the tree (toward leaves).
--   **Output ports $\ge k$**: Move UP the tree (toward roots).
--   **Input ports $< k$**: Receive flits from switches DOWN the tree.
--   **Input ports $\ge k$**: Receive flits from switches UP the tree.
+-   **Output/Input ports `< k`**: Route DOWN the tree (toward leaves).
+-   **Output/Input ports `>= k`**: Route UP the tree (toward roots).
 
-### 2.3 Leaf concentration links (Bottom Stage)
-The leaf routers (level `_n - 1`) connect downward-facing ports $0$ to $k-1$ directly to processor injection and ejection channels. These boundary links have a default latency of **1 cycle**:
-```cpp
-_Router( _n-1, pos)->AddInputChannel( _inject[link], _inject_cred[link] );
-_Router( _n-1, pos)->AddOutputChannel( _eject[link], _eject_cred[link] );
-```
-
-### 2.4 Middle Stage Inter-Router Wires
-Inter-stage outgoing channels are registered sequentially:
--   **Downward Outputs** (levels $0$ to $n-2$):
-    ```cpp
-    link = (level * chan_per_level) + pos * _k + port;
-    ```
--   **Upward Outputs** (levels $1$ to $n-1$):
-    ```cpp
-    link = (level * chan_per_level - chan_per_direction) + pos * _k + port;
-    ```
-
-### 2.5 Mathematical Branch Interleaving
-Downward and upward input channels are mapped to ports using a mathematical interleaving step to resolve parent-child branches:
--   **Downward Inputs**:
-    ```cpp
-    int routers_per_neighborhood = powi(_k, _n-1-level); 
-    int routers_per_branch = powi(_k, _n-1-(level+1)); 
-    int level_offset = routers_per_neighborhood * _k;
-    int link = ((level+1) * chan_per_level - chan_per_direction) + neighborhood * level_offset + port * routers_per_branch * gK + (neighborhood_pos) % routers_per_branch * gK + (neighborhood_pos) / routers_per_branch;
-    ```
+### 2.4 Downward and Upward Channel Mapping
+The function methodically registers output channels by looping over levels, positions, and ports. It calculates unique link IDs sequentially for downward and upward channels. 
+To resolve the parent-child branches for input channels, a mathematical interleaving step is applied. The network branches are divided into "neighborhoods", and input ports are mapped using modular arithmetic (`neighborhood_pos % routers_per_branch * _k` and division offsets) to ensure proper fat-tree connectivity between stages.

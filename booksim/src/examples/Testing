@@ -49,16 +49,16 @@ classes = 2;
 print_csv_results = 0;
 watch_out = watch_out.txt;
 //watch_packets = {3};
-//watch_flits = {12,20};
+watch_flits = {12,25,50};
 //watch_transactions = -;
-watch_file = watch_file.txt;
+//watch_file = watch_file.txt;
 viewer_trace = 1;
 network_file = network_file;
 
 //Power
-sim_power = 1;
+//sim_power = 1;
 //power_output_file = power.txt;
-tech_file = src/power/techfile.txt;
+//tech_file = src/power/techfile.txt;
 
 arb_type=priority;
 
@@ -77,4 +77,6 @@ active_packets_out = active_packets.txt;
 
 stats_out=stats.txt;
 
-print_activity = 1;
+print_activity = 0;
+
+seed=2;

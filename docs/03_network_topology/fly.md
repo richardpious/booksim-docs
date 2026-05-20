@@ -2,72 +2,36 @@
 
 # Butterfly Stage (Fly) Topology
 
-The Butterfly Stage (`fly`) is a classic multi-stage indirect network topology. It is implemented in the [KNFly](../../booksim/src/networks/fly.cpp#L37) class inside [fly.cpp](../../booksim/src/networks/fly.cpp).
+The Butterfly Stage (`fly`) is a classic multi-stage indirect network topology. It is implemented in the [KNFly](../../booksim/src/networks/fly.cpp) class.
 
 ---
 
-## 1. Top-Level Sizing & Parameters
+## 1. Parameters
 
--   **`k` (`_k`)**: Radix (defining the uniform $k \times k$ switch crossbar size).
+-   **`k` (`_k`)**: Radix (defining the uniform `k x k` switch crossbar size).
 -   **`n` (`_n`)**: Dimension/stage count.
 
-### 1.1 Sizing Formulas (`_ComputeSize`)
+### 1.1 Sizing Formulas
 -   **Total Terminals (`_nodes`)**: `powi(_k, _n)`
 -   **Total Switches (`_size`)**: `_n * powi(_k, _n - 1)`
--   **Total Inter-stage Channels (`_channels`)**:
-    ```cpp
-    _channels = (_n - 1) * _nodes;
-    ```
+-   **Total Inter-stage Channels**: `(_n - 1) * _nodes`
 
 ---
 
 ## 2. Network Construction (`_BuildNet`)
 
-The [_BuildNet](../../booksim/src/networks/fly.cpp#L61) method instantiates $k \times k$ switches stage-by-stage and registers inter-stage butterfly connections.
+The `_BuildNet` function creates the multi-stage network by instantiating switches stage-by-stage and wiring inter-stage butterfly patterns.
 
-### 2.1 Switch Sizing
-Switches are allocated with a uniform radix of `_k \times _k` at every stage:
-```cpp
-_routers[node] = Router::NewRouter( config, this, router_name.str( ), 
-                                    node, _k, _k );
-```
+### 2.1 Switch Allocation by Stage
+The function contains an outer loop over the network stages (`0` to `_n - 1`) and an inner loop over the address space within each stage (`0` to `k^(n-1) - 1`). Inside this nested loop, it instantiates each router with a uniform `k x k` radix.
 
 ### 2.2 Boundary Terminal Connections
-Processor injection and ejection channels are wired only to boundary stages (0 and $n-1$), using a default latency of **1 cycle**:
--   **Injection (Input to Stage 0)**:
-    ```cpp
-    if ( stage == 0 ) {
-      c = addr * _k + port;
-      _routers[node]->AddInputChannel( _inject[c], _inject_cred[c] );
-    }
-    ```
--   **Ejection (Output from Stage $n-1$)**:
-    ```cpp
-    if ( stage == _n - 1 ) {
-      c = addr * _k + port;
-      _routers[node]->AddOutputChannel( _eject[c], _eject_cred[c] );
-    }
-    ```
+While processing a router's `_k` ports:
+-   **Injection Channels**: If the router belongs to the first stage (`stage == 0`), the input ports are directly wired to the processor injection channels.
+-   **Ejection Channels**: If the router belongs to the final stage (`stage == _n - 1`), the output ports are directly wired to the processor ejection channels.
 
 ### 2.3 Inter-Stage Channels (Outgoings)
-For non-boundary stages ($stage < n-1$), outgoing channels are registered sequentially:
-```cpp
-c = _OutChannel( stage, addr, port );
-_routers[node]->AddOutputChannel( _chan[c], _chan_cred[c] );
-```
-Where `_OutChannel` returns `stage * _nodes + addr * _k + port`.
+For routers not in the final stage, their output channels are mapped to inter-stage wires. The `_OutChannel` helper function computes the sequential outgoing link ID based on the stage, address, and port, which is then added to the router.
 
-### 2.4 Digit-Swapping Input Channels
-For stages after the first ($stage > 0$), incoming channels map using coordinate digit-swapping arithmetic in `_InChannel` to form the butterfly routing fabric:
-```cpp
-int shift = powi( _k, _n-stage-1 );
-int last_digit = port;
-int zero_digit = ( addr / shift ) % _k;
-
-// Swap coordinates to solve source address
-in_addr = addr - zero_digit*shift + last_digit*shift;
-in_port = zero_digit;
-
-return (stage-1)*_nodes + in_addr*_k + in_port;
-```
-This digit swapping ensures that packets can be routed from any source terminal to any destination terminal in exactly $n$ stage traversals.
+### 2.4 Digit-Swapping Input Channels (Incomings)
+For routers not in the first stage, their input channels must be mapped to match the butterfly cross-connect pattern. The `_InChannel` helper function performs digit-swapping arithmetic on the coordinate addressing. It isolates the highest-order and lowest-order digits in the given stage dimension, swaps them, and reconstructs the source router address. This ensures that flits traverse across all required bit-dimensions over exactly `_n` stage traversals.

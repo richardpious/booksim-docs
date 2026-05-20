@@ -2,7 +2,7 @@
 
 # Custom Arbitrary Networks (AnyNet) Topology
 
-The `anynet` topology allows you to load any arbitrary, custom graph (e.g., ring, star, irregular layout) from an external text file. It is implemented in the [AnyNet](../../booksim/src/networks/anynet.cpp#L61) class inside [anynet.cpp](../../booksim/src/networks/anynet.cpp).
+The `anynet` topology allows you to load any arbitrary, custom graph (e.g., ring, star, irregular layout) from an external text file. It is implemented in the [AnyNet](../../booksim/src/networks/anynet.cpp) class.
 
 ---
 
@@ -22,74 +22,28 @@ The parser reads the text file line-by-line, ignoring blank lines and comments (
     ```text
     router <src_id> router <dest_id> <latency_cycles>
     ```
-    *Note:* Inter-switch links in `anynet` are unidirectional. The reverse path requires an explicit statement, otherwise it defaults to a latency of **1 cycle**.
 -   **Router-to-Node Link (Bidirectional)**:
     ```text
     router <router_id> node <node_id> <latency_cycles>
     ```
-    *Note:* Node statements are bidirectional; both the injection and ejection channels are assigned the parsed cycle latency.
 
 ---
 
 ## 2. Network Construction (`_BuildNet`)
 
-The [_BuildNet](../../booksim/src/networks/anynet.cpp#L133) parser loads links into two primary maps inside [readFile](../../booksim/src/networks/anynet.cpp#L324):
--   `router_list[0]`: Maps `router_id` $\to$ concentrated `node_id` $\to$ `(port, latency)`.
--   `router_list[1]`: Maps `router_id` $\to$ neighboring `router_id` $\to$ `(port, latency)`.
+The `_BuildNet` function builds the custom network using maps populated during the parsing phase. The construction consists of dynamic switch sizing, terminal wiring, and inter-router wiring.
 
-### 2.1 Radix Sizing & Switch Allocation
-For each router index `node`, switch radix is computed from the total number of connected processor nodes and neighbor switches:
-```cpp
-int radix = niter->second.size() + riter->second.size();
-_routers[node] = Router::NewRouter( config, this, router_name.str( ), 
-                                    node, radix, radix );
-```
+### 2.1 Dynamic Router Sizing
+The function iterates over the list of routers. For each router, it determines the total degree (radix) by summing the number of connected terminal nodes and the number of neighboring routers. It then allocates the router using this exact dynamic radix.
 
-### 2.2 Terminal Node Port Bindings
-Processor node injection/ejection channels are bound to switch ports sequentially starting from $0$:
-```cpp
-for(nniter = niter->second.begin(); nniter != niter->second.end(); nniter++){
-  int link = nniter->first;
-  (niter->second)[link].first = outport[node];
-  outport[node]++;
-  
-  _inject[link]->SetLatency(nniter->second.second);
-  _eject[link]->SetLatency(nniter->second.second);
-  _routers[node]->AddInputChannel( _inject[link], _inject_cred[link] );
-  _routers[node]->AddOutputChannel( _eject[link], _eject_cred[link] );
-}
-```
+### 2.2 Terminal Connections
+Next, `_BuildNet` iterates over the terminal nodes attached to each router. It dynamically assigns outport indices starting from 0. Injection and ejection channels are added to the router, with latency values explicitly configured as specified in the parsed input file.
 
-### 2.3 Inter-Router Link Port Bindings
-Inter-switch channels are bound continuing port index assignments sequentially where terminal node bindings left off:
-```cpp
-for(rriter = riter->second.begin(); rriter != riter->second.end(); rriter++){
-  int other_node = rriter->first;
-  int link = channel_count;
-  (riter->second)[other_node].first = outport[node];
-  outport[node]++;
-  
-  _chan[link]->SetLatency(rriter->second.second);
-  _routers[node]->AddOutputChannel( _chan[link], _chan_cred[link] );
-  _routers[other_node]->AddInputChannel( _chan[link], _chan_cred[link]);
-  channel_count++;
-}
-```
+### 2.3 Inter-Router Links
+Finally, the function iterates over the router-to-router link specifications. It assigns the subsequent available output ports to these links. The corresponding unidirectional channels are instantiated, their latencies are set based on the text file, and they are linked to the input ports of the destination routers.
 
 ---
 
-## 3. Pre-Computed Routing Table Setup
+## 3. Pre-Computed Routing Setup
 
-Because custom networks are arbitrary, coordinate-based routing functions cannot be used. Instead, BookSim pre-computes shortest paths at startup:
-
-1.  **Dijkstra's Solver**: [buildRoutingTable](../../booksim/src/networks/anynet.cpp#L243) runs [route(r_start)](../../booksim/src/networks/anynet.cpp#L255) for each switch.
-2.  **Shortest Paths**: The solver computes the shortest path (based on hop count, not link delay) from all switches to all destination terminal nodes using **Dijkstra's Algorithm**.
-3.  **Port Lookup Table**: The first-hop output port along the calculated shortest path is saved to the routing table:
-    ```cpp
-    routing_table[r_start][dest_node] = port;
-    ```
-4.  **Routing Function**: The `min_anynet` routing function queries this pre-computed matrix to forward flits:
-    ```cpp
-    int out_port = global_routing_table[r->GetID()][f->dest];
-    outputs->AddRange( out_port, vcBegin, vcEnd );
-    ```
+Since custom graphs lack a uniform coordinate system, BookSim computes routing tables using Dijkstra's algorithm. The routing table maps a destination node to the correct first-hop output port on the current router. The `min_anynet` routing function uses this pre-computed lookup table for routing flits.
