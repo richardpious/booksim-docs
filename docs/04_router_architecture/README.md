@@ -4,7 +4,6 @@
 
 The router is the core component of the network. BookSim provides a flexible router model with a configurable pipeline.
 
-## Detailed Documentation
 
 To explore the router architecture in depth, please refer to the following guides:
 - [IQ Router Pipeline](iq_router_pipeline.md): Cycle-by-cycle execution mechanics of the standard Input-Queued Router.

@@ -4,6 +4,12 @@
 
 Routing algorithms determine the path taken by flits from source to destination. In BookSim, routing is configured using the `routing_function` parameter.
 
+To explore the routing implementations in depth, please refer to the following guides:
+- [Deterministic Routing](deterministic_routing.md): Dimension-order routing for meshes and tori, and XY/YX variants.
+- [Adaptive Routing](adaptive_routing.md): Minimal adaptive, turn-model algorithms, and randomized minimal routing.
+- [Specialized Topology Routing](specialized_topology_routing.md): Nearest Common Ancestor (NCA) for trees and Valiant routing for Dragonflies.
+- [Routing Function Registration](routing_function_registration.md): How to write and register custom routing functions.
+
 ## Available Routing Functions
 
 Routing functions are often topology-specific. The registration format in the source code is usually `rfname_topologyname`.

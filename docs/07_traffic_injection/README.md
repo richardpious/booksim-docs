@@ -4,6 +4,14 @@
 
 Traffic injection defines how and when packets are introduced into the network by the source nodes.
 
+## Detailed Documentation
+
+To explore traffic injection and simulation management in depth, please refer to the following guides:
+- [Traffic Patterns](traffic_patterns.md): Spatial distributions like uniform, bitcomp, tornado, and hotspot.
+- [Injection Processes](injection_processes.md): Temporal distributions including memoryless Bernoulli and bursty On-Off.
+- [Traffic Classes and Priorities](traffic_classes_and_priorities.md): Multi-class configuration, priority queuing, and read/write request/reply modeling.
+- [The Traffic Manager](traffic_manager.md): The core simulation loop, packet segmentation, and steady-state convergence testing.
+
 ## Injection Processes
 
 The `injection_process` parameter defines the temporal distribution of packet injection. Implementation details can be found in [injection.cpp](../../booksim/src/injection.cpp).

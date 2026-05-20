@@ -4,6 +4,14 @@
 
 BookSim uses credit-based flow control to manage buffer space and prevent overflow. Virtual channels (VCs) are used to multiplex physical links and avoid deadlocks.
 
+## Detailed Documentation
+
+To explore flow control and buffers in depth, please refer to the following guides:
+- [Virtual Channels](virtual_channels.md): VC states, lifecycles, and wait-for-tail mechanics.
+- [Buffer Management](buffer_management.md): Private vs. shared buffer allocation policies and overflow protection.
+- [Credit-Based Flow Control](credit_flow_control.md): Tracking downstream buffer state and modeling wire credit delays.
+- [Speculative Allocation](speculative_allocation.md): How speculation bypasses pipeline dependencies to reduce latency.
+
 ## Virtual Channels
 
 VCs allow multiple packets to share a single physical link by partitioning the input buffers. Implementation of virtual channels can be found in [vc.cpp](../../booksim/src/vc.cpp#L48) and overall buffer management in [buffer.cpp](../../booksim/src/buffer.cpp#L34).

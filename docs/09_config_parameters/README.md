@@ -4,6 +4,12 @@
 
 This page provides a consolidated list of the most commonly used configuration parameters in BookSim.
 
+## Detailed Documentation
+
+To explore the configuration parsing engine in depth, please refer to the following guides:
+- [Configuration Parser](configuration_parser.md): Lex/Yacc mechanics for reading configuration text files.
+- [The BookSimConfig Class](booksim_config.md): Default values, strict typing, and command-line overrides.
+
 ## General Simulation
 
 | Parameter | Type | Default | Description |

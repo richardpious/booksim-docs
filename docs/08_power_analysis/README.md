@@ -4,6 +4,13 @@
 
 BookSim includes a power model that estimates the power and area consumption of the network based on the technology parameters and the activity recorded during simulation. The power analysis is orchestrated by the [PowerModule](../../booksim/src/power/power_module.cpp#L34).
 
+## Detailed Documentation
+
+To explore the power and area models in depth, please refer to the following guides:
+- [The Power Module](power_module.md): Integration with the simulator and calculation of dynamic/leakage power for channels, buffers, and crossbars.
+- [Activity Monitors](activity_monitors.md): How `BufferMonitor` and `SwitchMonitor` passively track hardware switching events.
+- [Technology Parameters](technology_parameters.md): Breakdown of the required physical constants (Vdd, capacitance, leakage, device sizing) in the `tech_file`.
+
 ## Enabling Power Analysis
 
 To enable power analysis, set the `sim_power` parameter to 1. You also need to provide a technology file that specifies the physical characteristics of the target hardware.
