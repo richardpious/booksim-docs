@@ -4,6 +4,14 @@
 
 The router is the core component of the network. BookSim provides a flexible router model with a configurable pipeline.
 
+## Detailed Documentation
+
+To explore the router architecture in depth, please refer to the following guides:
+- [IQ Router Pipeline](iq_router_pipeline.md): Cycle-by-cycle execution mechanics of the standard Input-Queued Router.
+- [Allocators and Arbiters](allocators_and_arbiters.md): Contention resolution engines (Switch and VC Allocators).
+- [Crossbar and Speedup](crossbar_and_speedup.md): Switch traversal mechanics and internal speedup configuration.
+- [Alternative Routers](alternative_routers.md): Details on Event-driven and Chaos routers.
+
 ## Default Router Model ([iq_router.cpp](../../booksim/src/routers/iq_router.cpp#L50))
 
 The most common router model is the **Input-Queued (IQ)** router. It follows a standard pipeline:
