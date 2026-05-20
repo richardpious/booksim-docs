@@ -1910,11 +1910,24 @@ void TrafficManager::UpdateStats() {
 #ifdef TRACK_FLOWS
     {
       char trail_char = (c == _classes - 1) ? '\n' : ',';
-      if (_injected_flits_out)
-        *_injected_flits_out << _injected_flits[c] << trail_char;
+      if (_injected_flits_out) {
+        *_injected_flits_out << "Cycle: " << _time << " Class: " << c
+                             << " Nodes: [";
+        for (size_t i = 0; i < _injected_flits[c].size(); ++i) {
+          *_injected_flits_out << " " << i << ":" << _injected_flits[c][i];
+        }
+        *_injected_flits_out << " ]" << trail_char;
+      }
       _injected_flits[c].assign(_nodes, 0);
-      if (_ejected_flits_out)
-        *_ejected_flits_out << _ejected_flits[c] << trail_char;
+      // to add into ejected_flits.txt
+      if (_ejected_flits_out) {
+        *_ejected_flits_out << "Cycle: " << _time << " Class: " << c
+                            << " Nodes: [";
+        for (size_t i = 0; i < _ejected_flits[c].size(); ++i) {
+          *_ejected_flits_out << " " << i << ":" << _ejected_flits[c][i];
+        }
+        *_ejected_flits_out << " ]" << trail_char;
+      }
       _ejected_flits[c].assign(_nodes, 0);
     }
 #endif
