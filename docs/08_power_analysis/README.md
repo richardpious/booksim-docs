@@ -4,7 +4,6 @@
 
 BookSim includes a power model that estimates the power and area consumption of the network based on the technology parameters and the activity recorded during simulation. The power analysis is orchestrated by the [PowerModule](../../booksim/src/power/power_module.cpp#L34).
 
-## Detailed Documentation
 
 To explore the power and area models in depth, please refer to the following guides:
 - [The Power Module](power_module.md): Integration with the simulator and calculation of dynamic/leakage power for channels, buffers, and crossbars.

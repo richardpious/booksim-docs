@@ -3,7 +3,6 @@
 # Configuration Parameters
 
 This page provides a consolidated list of the most commonly used configuration parameters in BookSim.
-
 ## Detailed Documentation
 
 To explore the configuration parsing engine in depth, please refer to the following guides:

@@ -4,7 +4,6 @@
 
 Traffic injection defines how and when packets are introduced into the network by the source nodes.
 
-## Detailed Documentation
 
 To explore traffic injection and simulation management in depth, please refer to the following guides:
 - [Traffic Patterns](traffic_patterns.md): Spatial distributions like uniform, bitcomp, tornado, and hotspot.

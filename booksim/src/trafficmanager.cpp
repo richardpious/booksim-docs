@@ -1910,6 +1910,7 @@ void TrafficManager::UpdateStats() {
 #ifdef TRACK_FLOWS
     {
       char trail_char = (c == _classes - 1) ? '\n' : ',';
+      // For readability in injected_filts.txt
       if (_injected_flits_out) {
         *_injected_flits_out << "Cycle: " << _time << " Class: " << c
                              << " Nodes: [";
@@ -1919,7 +1920,7 @@ void TrafficManager::UpdateStats() {
         *_injected_flits_out << " ]" << trail_char;
       }
       _injected_flits[c].assign(_nodes, 0);
-      // to add into ejected_flits.txt
+      // For readability in ejected_flits.txt
       if (_ejected_flits_out) {
         *_ejected_flits_out << "Cycle: " << _time << " Class: " << c
                             << " Nodes: [";
@@ -1929,6 +1930,13 @@ void TrafficManager::UpdateStats() {
         *_ejected_flits_out << " ]" << trail_char;
       }
       _ejected_flits[c].assign(_nodes, 0);
+    }
+    // Print cycle/class header once per class for received/sent flits
+    if (_received_flits_out) {
+      *_received_flits_out << "Cycle: " << _time << " Class: " << c << "\n";
+    }
+    if (_sent_flits_out) {
+      *_sent_flits_out << "Cycle: " << _time << " Class: " << c << "\n";
     }
 #endif
     for (int subnet = 0; subnet < _subnets; ++subnet) {
@@ -1945,12 +1953,28 @@ void TrafficManager::UpdateStats() {
                            (subnet == _subnets - 1) && (c == _classes - 1))
                               ? '\n'
                               : ',';
-        if (_received_flits_out)
-          *_received_flits_out << r->GetReceivedFlits(c) << trail_char;
+        // Subnet/Router detail for received_flits.txt (Cycle/Class printed once above)
+        if (_received_flits_out) {
+          *_received_flits_out << "  Subnet: " << subnet << " Router: " << router
+                               << " Inputs: [";
+          vector<int> const &rf = r->GetReceivedFlits(c);
+          for (size_t i = 0; i < rf.size(); ++i) {
+            *_received_flits_out << " " << i << ":" << rf[i];
+          }
+          *_received_flits_out << " ]\n";
+        }
         if (_stored_flits_out)
           *_stored_flits_out << r->GetStoredFlits(c) << trail_char;
-        if (_sent_flits_out)
-          *_sent_flits_out << r->GetSentFlits(c) << trail_char;
+        // Subnet/Router detail for sent_flits.txt (Cycle/Class printed once above)
+        if (_sent_flits_out) {
+          *_sent_flits_out << "  Subnet: " << subnet << " Router: " << router
+                           << " Outputs: [";
+          vector<int> const &sf = r->GetSentFlits(c);
+          for (size_t i = 0; i < sf.size(); ++i) {
+            *_sent_flits_out << " " << i << ":" << sf[i];
+          }
+          *_sent_flits_out << " ]\n";
+        }
         if (_outstanding_credits_out)
           *_outstanding_credits_out << r->GetOutstandingCredits(c)
                                     << trail_char;
