@@ -438,6 +438,7 @@ TrafficManager::TrafficManager(const Configuration &config,
     _active_packets_out = NULL;
   } else {
     _active_packets_out = new ofstream(active_packets_out_file.c_str());
+      if(_active_packets_out) *_active_packets_out << "Packets Actively Traversing per Cycle\n";
   }
 #endif
 
@@ -1910,17 +1911,17 @@ void TrafficManager::UpdateStats() {
       char trail_char = (c == _classes - 1) ? '\n' : ',';
       // For readability in injected_filts.txt
       if (_injected_flits_out) {
-        *_injected_flits_out << "Cycle: " << _time << " Class: " << c
+        *_injected_flits_out << "Cycles " << _time-1000 << " to " << _time-1 << " Class: " << c
                              << " Flits Injected per Node: [";
         for (size_t i = 0; i < _injected_flits[c].size(); ++i) {
           *_injected_flits_out << " " << i << ":" << _injected_flits[c][i];
         }
-        *_injected_flits_out << " ]" << trail_char;
+        *_injected_flits_out << " ]" << '\n';
       }
       _injected_flits[c].assign(_nodes, 0);
       // For readability in ejected_flits.txt
       if (_ejected_flits_out) {
-        *_ejected_flits_out << "Cycle: " << _time << " Class: " << c
+        *_ejected_flits_out << "Cycles " << _time-1000 << " to " << _time-1 << " Class: " << c
                             << " Flits Ejected per Node: [";
         for (size_t i = 0; i < _ejected_flits[c].size(); ++i) {
           *_ejected_flits_out << " " << i << ":" << _ejected_flits[c][i];
@@ -1946,7 +1947,7 @@ void TrafficManager::UpdateStats() {
     }
     // Print human-readable header for active packets (one per class)
     if (_active_packets_out) {
-      *_active_packets_out << "Cycle: " << _time << " Class: " << c << "\n";
+      *_active_packets_out << "Cycle: " << _time << " Class: " << c;
     }
 #endif
     for (int subnet = 0; subnet < _subnets; ++subnet) {
@@ -1957,6 +1958,9 @@ void TrafficManager::UpdateStats() {
       if( _outstanding_credits_out) {
         // Subnet detail for outstanding_credits.txt (Cycle/Class printed once above)      
         *_outstanding_credits_out << "  Subnet: " << subnet <<'\n';}
+      if( _active_packets_out) {
+        // Subnet detail for active_packets.txt (Cycle/Class printed once above)      
+        *_active_packets_out << "  Subnet: " << subnet <<'\n';}
       
 
       #ifdef TRACK_FLOWS
@@ -2023,8 +2027,8 @@ void TrafficManager::UpdateStats() {
         }
         // Human-readable active_packets per subnet/router
         if (_active_packets_out) {
-          *_active_packets_out << "  Subnet: " << subnet << " Router: "
-                               << router << " Packets Actively Traversing per Port: [";
+          *_active_packets_out << " Router "
+                               << router <<  ": [";
 
           vector<int> const &ap = r->GetActivePackets(c);
           for (size_t i = 0; i < ap.size(); ++i) {

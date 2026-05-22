@@ -25,7 +25,7 @@
 %traffic = 'uniform';
 %used_credits_out = 'used_credits_out.txt';
 %vc_allocator = 'islip';
-%watch_flits = '{12,25,50}';
+%watch_flits = '{0}';
 %watch_out = 'watch_out.txt';
 %alloc_iters = 1;
 %batch_count = 1;
