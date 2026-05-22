@@ -1,6 +1,6 @@
 # BookSim Documentation
 
-Unofficial documentation, architecture notes and tracing formats  for BookSim.
+Documentation, architecture notes and tracing formats for BookSim.
 
 ---
 
@@ -10,7 +10,6 @@ This repository aims to:
 
 - Document BookSim configuration parameters
 - Explain internal router/network architecture
-- Link documentation directly to source code
 
 ---
 
