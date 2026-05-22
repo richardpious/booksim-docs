@@ -1974,8 +1974,8 @@ void TrafficManager::UpdateStats() {
         for (size_t ii = 0; ii < inj.size(); ++ii) {
           *_stored_flits_out << " " << ii << ":" << inj[ii];
         }
-        *_stored_flits_out << " ]" << '\n';*/
-      }
+        *_stored_flits_out << " ]" << '\n';
+      }*/
 #endif
       for (int router = 0; router < _routers; ++router) {
         Router *const r = _router[subnet][router];
