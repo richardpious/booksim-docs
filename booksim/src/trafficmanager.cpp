@@ -2090,23 +2090,22 @@ void TrafficManager::UpdateStats() {
       BufferState const *const bs = _buf_states[n][s];
       for (int v = 0; v < _vcs; ++v) {
         if (_used_credits_out) {
-          if (v == 0) *_used_credits_out << " Node: " << n << " VCs: [";
+          if (v == 0) *_used_credits_out << " Node: " << n << " Used Credits per VC: [";
           *_used_credits_out << " " << v << ":" << bs->OccupancyFor(v);
-          if (v == _vcs - 1) *_used_credits_out << " ]" << '\n';
         }
         if (_free_credits_out) {
-          if (v == 0) *_free_credits_out << " Node: " << n << " VCs: [";
+          if (v == 0) *_free_credits_out << " Node: " << n << " Free Credits per VC: [";
           *_free_credits_out << " " << v << ":" << bs->AvailableFor(v);
-          if (v == _vcs - 1) *_free_credits_out << " ]" << '\n';
         }
         if (_max_credits_out) {
-          if (v == 0) *_max_credits_out << " Node: " << n << " VCs: [";
+          if (v == 0) *_max_credits_out << " Node: " << n << " Max Credits per VC: [";
           *_max_credits_out << " " << v << ":" << bs->LimitFor(v);
-          if (v == _vcs - 1) *_max_credits_out << " ]" << '\n';
         }
       }
 
-        
+       *_used_credits_out << " ]" << '\n';
+       *_free_credits_out << " ]" << '\n';
+       *_max_credits_out << " ]" << '\n';
 
     }
     for (int r = 0; r < _routers; ++r) {
@@ -2115,19 +2114,19 @@ void TrafficManager::UpdateStats() {
           ((r == _routers - 1) && (s == _subnets - 1)) ? '\n' : ',';
       if (_used_credits_out) {
         vector<int> uc = rtr->UsedCredits();
-        *_used_credits_out << "  Subnet: " << s << " Router: " << r << " Used: [";
+        *_used_credits_out << " Router: " << r << " Used Credits per VC: [";
         for (size_t i = 0; i < uc.size(); ++i) *_used_credits_out << " " << i << ":" << uc[i];
         *_used_credits_out << " ]" << '\n';
       }
       if (_free_credits_out) {
         vector<int> fc = rtr->FreeCredits();
-        *_free_credits_out << "  Subnet: " << s << " Router: " << r << " Free: [";
+        *_free_credits_out << " Router: " << r << " Free Credits per VC: [";
         for (size_t i = 0; i < fc.size(); ++i) *_free_credits_out << " " << i << ":" << fc[i];
         *_free_credits_out << " ]" << '\n';
       }
       if (_max_credits_out) {
         vector<int> mc = rtr->MaxCredits();
-        *_max_credits_out << "  Subnet: " << s << " Router: " << r << " Max: [";
+        *_max_credits_out << " Router: " << r << " Max Credits per VC: [";
         for (size_t i = 0; i < mc.size(); ++i) *_max_credits_out << " " << i << ":" << mc[i];
         *_max_credits_out << " ]" << '\n';
       }
