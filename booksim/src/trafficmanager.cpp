@@ -2070,30 +2070,44 @@ void TrafficManager::UpdateStats() {
 
 #ifdef TRACK_CREDITS
   // Print cycle header for credit logs for readability
-  if (_used_credits_out) *_used_credits_out << "Cycle: " << _time << "\n";
-  if (_free_credits_out) *_free_credits_out << "Cycle: " << _time << "\n";
-  if (_max_credits_out) *_max_credits_out << "Cycle: " << _time << "\n";
+  if (_used_credits_out) *_used_credits_out << "Cycle: " << _time;
+  if (_free_credits_out) *_free_credits_out << "Cycle: " << _time;
+  if (_max_credits_out) *_max_credits_out << "Cycle: " << _time;
 
   for (int s = 0; s < _subnets; ++s) {
+
+    if( _used_credits_out) {
+      // Subnet detail for used_credits.txt (Cycle printed once above)      
+      *_used_credits_out << "  Subnet: " << s <<'\n';}
+    if( _free_credits_out) {
+      // Subnet detail for free_credits.txt (Cycle printed once above)      
+      *_free_credits_out << "  Subnet: " << s <<'\n';}
+    if( _max_credits_out) {
+      // Subnet detail for max_credits.txt (Cycle printed once above)      
+      *_max_credits_out << "  Subnet: " << s <<'\n';}
+
     for (int n = 0; n < _nodes; ++n) {
       BufferState const *const bs = _buf_states[n][s];
       for (int v = 0; v < _vcs; ++v) {
         if (_used_credits_out) {
-          if (v == 0) *_used_credits_out << "  Subnet: " << s << " Node: " << n << " VCs: [";
+          if (v == 0) *_used_credits_out << " Node: " << n << " VCs: [";
           *_used_credits_out << " " << v << ":" << bs->OccupancyFor(v);
           if (v == _vcs - 1) *_used_credits_out << " ]" << '\n';
         }
         if (_free_credits_out) {
-          if (v == 0) *_free_credits_out << "  Subnet: " << s << " Node: " << n << " VCs: [";
+          if (v == 0) *_free_credits_out << " Node: " << n << " VCs: [";
           *_free_credits_out << " " << v << ":" << bs->AvailableFor(v);
           if (v == _vcs - 1) *_free_credits_out << " ]" << '\n';
         }
         if (_max_credits_out) {
-          if (v == 0) *_max_credits_out << "  Subnet: " << s << " Node: " << n << " VCs: [";
+          if (v == 0) *_max_credits_out << " Node: " << n << " VCs: [";
           *_max_credits_out << " " << v << ":" << bs->LimitFor(v);
           if (v == _vcs - 1) *_max_credits_out << " ]" << '\n';
         }
       }
+
+        
+
     }
     for (int r = 0; r < _routers; ++r) {
       Router const *const rtr = _router[s][r];
