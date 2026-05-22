@@ -407,6 +407,7 @@ TrafficManager::TrafficManager(const Configuration &config,
     _received_flits_out = NULL;
   } else {
     _received_flits_out = new ofstream(received_flits_out_file.c_str());
+      if (_received_flits_out) *_received_flits_out << "Flits Received per Port\n";
   }
   string stored_flits_out_file = config.GetStr("stored_flits_out");
   if (stored_flits_out_file == "") {
@@ -420,6 +421,7 @@ TrafficManager::TrafficManager(const Configuration &config,
     _sent_flits_out = NULL;
   } else {
     _sent_flits_out = new ofstream(sent_flits_out_file.c_str());
+      if (_sent_flits_out) *_sent_flits_out << "Flits Sent per Port\n";
   }
   string outstanding_credits_out_file =
       config.GetStr("outstanding_credits_out");
@@ -1936,10 +1938,10 @@ void TrafficManager::UpdateStats() {
     }
     // Print cycle/class header once per class for received/sent flits
     if (_received_flits_out) {
-      *_received_flits_out << "Cycle: " << _time << " Class: " << c << "\n";
+      *_received_flits_out << "Cycle: " << _time << " Class: " << c;
     }
     if (_sent_flits_out) {
-      *_sent_flits_out << "Cycle: " << _time << " Class: " << c << "\n";
+      *_sent_flits_out << "Cycle: " << _time << " Class: " << c;
     }
     // Print human-readable header for outstanding credits (one per class)
     if (_outstanding_credits_out) {
@@ -1965,6 +1967,13 @@ void TrafficManager::UpdateStats() {
       if( _active_packets_out) {
         // Subnet detail for active_packets.txt (Cycle/Class printed once above)      
         *_active_packets_out << "  Subnet: " << subnet <<'\n';}
+      // Print subnet header once for received/sent flits to avoid repeating it per router
+      if (_received_flits_out) {
+        *_received_flits_out << " Subnet: " << subnet << '\n';
+      }
+      if (_sent_flits_out) {
+        *_sent_flits_out << " Subnet: " << subnet << '\n';
+      }
       
 
       #ifdef TRACK_FLOWS
@@ -1994,8 +2003,7 @@ void TrafficManager::UpdateStats() {
                               : ',';
         // Subnet/Router detail for received_flits.txt (Cycle/Class printed once above)
         if (_received_flits_out) {
-          *_received_flits_out << "  Subnet: " << subnet << " Router: " << router
-                               << " Inputs: [";
+          *_received_flits_out << " Router " << router << ": [";
           vector<int> const &rf = r->GetReceivedFlits(c);
           for (size_t i = 0; i < rf.size(); ++i) {
             *_received_flits_out << " " << i << ":" << rf[i];
@@ -2012,8 +2020,7 @@ void TrafficManager::UpdateStats() {
         }
         // Subnet/Router detail for sent_flits.txt (Cycle/Class printed once above)
         if (_sent_flits_out) {
-          *_sent_flits_out << "  Subnet: " << subnet << " Router: " << router
-                           << " Outputs: [";
+          *_sent_flits_out << " Router " << router << ": [";
           vector<int> const &sf = r->GetSentFlits(c);
           for (size_t i = 0; i < sf.size(); ++i) {
             *_sent_flits_out << " " << i << ":" << sf[i];
