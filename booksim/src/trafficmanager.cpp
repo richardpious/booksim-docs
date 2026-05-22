@@ -1970,7 +1970,7 @@ void TrafficManager::UpdateStats() {
         for (size_t ii = 0; ii < inj.size(); ++ii) {
           *_outstanding_credits_out << " " << ii << ":" << inj[ii];
         }
-        *_outstanding_credits_out << " ]" << '\n';
+        *_outstanding_credits_out << " ]\n Outstanding Credits per Port:\n";
       }
       /*if (_stored_flits_out) {
         *_stored_flits_out << " Flits Stored at Nodes: [";
@@ -2017,8 +2017,8 @@ void TrafficManager::UpdateStats() {
           *_sent_flits_out << " ]\n";
         }
         if (_outstanding_credits_out) {
-          *_outstanding_credits_out << " Router: "
-                                    << router << " Outstanding Credits per port: [";
+          *_outstanding_credits_out << " Router "
+                                    << router << ": [";
           vector<int> const &oc = r->GetOutstandingCredits(c);
           for (size_t oi = 0; oi < oc.size(); ++oi) {
             *_outstanding_credits_out << " " << oi << ":" << oc[oi];
