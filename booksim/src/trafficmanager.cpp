@@ -1968,13 +1968,13 @@ void TrafficManager::UpdateStats() {
         }
         *_outstanding_credits_out << " ]" << '\n';
       }
-      if (_stored_flits_out) {
+      /*if (_stored_flits_out) {
         *_stored_flits_out << " Flits Stored at Nodes: [";
         vector<int> inj(_nodes, 0);
         for (size_t ii = 0; ii < inj.size(); ++ii) {
           *_stored_flits_out << " " << ii << ":" << inj[ii];
         }
-        *_stored_flits_out << " ]" << '\n';
+        *_stored_flits_out << " ]" << '\n';*/
       }
 #endif
       for (int router = 0; router < _routers; ++router) {
@@ -2088,25 +2088,18 @@ void TrafficManager::UpdateStats() {
 
     for (int n = 0; n < _nodes; ++n) {
       BufferState const *const bs = _buf_states[n][s];
+      if(_used_credits_out) *_used_credits_out << " Node: " << n << " Used Credits per VC: [";
+      if(_free_credits_out) *_free_credits_out << " Node: " << n << " Free Credits per VC: [";
+      if(_max_credits_out) *_max_credits_out << " Node: " << n << " Max Credits per VC: [";
+
       for (int v = 0; v < _vcs; ++v) {
-        if (_used_credits_out) {
-          if (v == 0) *_used_credits_out << " Node: " << n << " Used Credits per VC: [";
-          *_used_credits_out << " " << v << ":" << bs->OccupancyFor(v);
-        }
-        if (_free_credits_out) {
-          if (v == 0) *_free_credits_out << " Node: " << n << " Free Credits per VC: [";
-          *_free_credits_out << " " << v << ":" << bs->AvailableFor(v);
-        }
-        if (_max_credits_out) {
-          if (v == 0) *_max_credits_out << " Node: " << n << " Max Credits per VC: [";
-          *_max_credits_out << " " << v << ":" << bs->LimitFor(v);
-        }
+        if (_used_credits_out) *_used_credits_out << " " << v << ":" << bs->OccupancyFor(v);
+        if (_free_credits_out)  *_free_credits_out << " " << v << ":" << bs->AvailableFor(v);
+        if (_max_credits_out) *_max_credits_out << " " << v << ":" << bs->LimitFor(v);
       }
-
-       *_used_credits_out << " ]" << '\n';
-       *_free_credits_out << " ]" << '\n';
-       *_max_credits_out << " ]" << '\n';
-
+      if(_used_credits_out) *_used_credits_out << " ]" << '\n';
+      if(_free_credits_out) *_free_credits_out << " ]" << '\n';
+      if(_max_credits_out) *_max_credits_out << " ]" << '\n';
     }
     for (int r = 0; r < _routers; ++r) {
       Router const *const rtr = _router[s][r];
