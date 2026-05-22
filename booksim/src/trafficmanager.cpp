@@ -413,6 +413,7 @@ TrafficManager::TrafficManager(const Configuration &config,
     _stored_flits_out = NULL;
   } else {
     _stored_flits_out = new ofstream(stored_flits_out_file.c_str());
+      if( _stored_flits_out) *_stored_flits_out << "Flits Stored per Port\n";
   }
   string sent_flits_out_file = config.GetStr("sent_flits_out");
   if (sent_flits_out_file == "") {
@@ -2002,7 +2003,7 @@ void TrafficManager::UpdateStats() {
           *_received_flits_out << " ]\n";
         }
         if (_stored_flits_out) {
-          *_stored_flits_out << " Router: " << router << " Flits Stored per Port: [";
+          *_stored_flits_out << " Router " << router << ": [";
           vector<int> const &sf = r->GetStoredFlits(c);
           for (size_t i = 0; i < sf.size(); ++i) {
             *_stored_flits_out << " " << i << ":" << sf[i];
