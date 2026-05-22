@@ -1899,11 +1899,9 @@ void TrafficManager::WriteStats(ostream &os) const {
 
 void TrafficManager::UpdateStats() {
 #if defined(TRACK_FLOWS) || defined(TRACK_STALLS)
-// Added to add readability to active_packets.txt
+// active_packets: header will be printed per class for readability
 #ifdef TRACK_FLOWS
-  if (_active_packets_out) {
-    *_active_packets_out << "Cycle " << _time << ":";
-  }
+  (void)0; // placeholder to keep macros aligned
 #endif
 
   for (int c = 0; c < _classes; ++c) {
@@ -1938,13 +1936,46 @@ void TrafficManager::UpdateStats() {
     if (_sent_flits_out) {
       *_sent_flits_out << "Cycle: " << _time << " Class: " << c << "\n";
     }
+    // Print human-readable header for outstanding credits (one per class)
+    if (_outstanding_credits_out) {
+      *_outstanding_credits_out << "Cycle: " << _time << " Class: " << c;
+    }
+    // Print human-readable header for stored_flits (one per class)
+    if (_stored_flits_out) {
+      *_stored_flits_out << "Cycle: " << _time << " Class: " << c;
+    }
+    // Print human-readable header for active packets (one per class)
+    if (_active_packets_out) {
+      *_active_packets_out << "Cycle: " << _time << " Class: " << c << "\n";
+    }
 #endif
     for (int subnet = 0; subnet < _subnets; ++subnet) {
-#ifdef TRACK_FLOWS
-      if (_outstanding_credits_out)
-        *_outstanding_credits_out << _outstanding_credits[c][subnet] << ',';
-      if (_stored_flits_out)
-        *_stored_flits_out << vector<int>(_nodes, 0) << ',';
+
+      if( _stored_flits_out) {
+        // Subnet detail for stored_flits.txt (Cycle/Class printed once above)      
+        *_stored_flits_out << "  Subnet: " << subnet <<'\n';}
+      if( _outstanding_credits_out) {
+        // Subnet detail for outstanding_credits.txt (Cycle/Class printed once above)      
+        *_outstanding_credits_out << "  Subnet: " << subnet <<'\n';}
+      
+
+      #ifdef TRACK_FLOWS
+      if (_outstanding_credits_out) {
+        *_outstanding_credits_out << " Outstanding Credits at Nodes: [";
+        vector<int> const &inj = _outstanding_credits[c][subnet];
+        for (size_t ii = 0; ii < inj.size(); ++ii) {
+          *_outstanding_credits_out << " " << ii << ":" << inj[ii];
+        }
+        *_outstanding_credits_out << " ]" << '\n';
+      }
+      if (_stored_flits_out) {
+        *_stored_flits_out << " Flits Stored at Nodes: [";
+        vector<int> inj(_nodes, 0);
+        for (size_t ii = 0; ii < inj.size(); ++ii) {
+          *_stored_flits_out << " " << ii << ":" << inj[ii];
+        }
+        *_stored_flits_out << " ]" << '\n';
+      }
 #endif
       for (int router = 0; router < _routers; ++router) {
         Router *const r = _router[subnet][router];
@@ -1963,8 +1994,14 @@ void TrafficManager::UpdateStats() {
           }
           *_received_flits_out << " ]\n";
         }
-        if (_stored_flits_out)
-          *_stored_flits_out << r->GetStoredFlits(c) << trail_char;
+        if (_stored_flits_out) {
+          *_stored_flits_out << " Router: " << router << " Flits Stored per Port: [";
+          vector<int> const &sf = r->GetStoredFlits(c);
+          for (size_t i = 0; i < sf.size(); ++i) {
+            *_stored_flits_out << " " << i << ":" << sf[i];
+          }
+          *_stored_flits_out << " ]" << '\n';
+        }
         // Subnet/Router detail for sent_flits.txt (Cycle/Class printed once above)
         if (_sent_flits_out) {
           *_sent_flits_out << "  Subnet: " << subnet << " Router: " << router
@@ -1975,23 +2012,25 @@ void TrafficManager::UpdateStats() {
           }
           *_sent_flits_out << " ]\n";
         }
-        if (_outstanding_credits_out)
-          *_outstanding_credits_out << r->GetOutstandingCredits(c)
-                                    << trail_char;
-        // Added to add readability to active_packets.txt
+        if (_outstanding_credits_out) {
+          *_outstanding_credits_out << " Router: "
+                                    << router << " Outstanding Credits per port: [";
+          vector<int> const &oc = r->GetOutstandingCredits(c);
+          for (size_t oi = 0; oi < oc.size(); ++oi) {
+            *_outstanding_credits_out << " " << oi << ":" << oc[oi];
+          }
+          *_outstanding_credits_out << " ]\n";
+        }
+        // Human-readable active_packets per subnet/router
         if (_active_packets_out) {
-          *_active_packets_out << " [Class:" << c << " Subnet: " << subnet
-                               << " Router" << router << ":";
+          *_active_packets_out << "  Subnet: " << subnet << " Router: "
+                               << router << " Packets: [";
 
           vector<int> const &ap = r->GetActivePackets(c);
           for (size_t i = 0; i < ap.size(); ++i) {
-            *_active_packets_out << " " << ap[i];
+            *_active_packets_out << " " << i << ":" << ap[i];
           }
-          *_active_packets_out << "]";
-          if (router == _routers - 1 && subnet == _subnets - 1 &&
-              c == _classes - 1) {
-            *_active_packets_out << "\n";
-          }
+          *_active_packets_out << " ]\n";
         }
         r->ResetFlowStats(c);
 #endif
@@ -2030,28 +2069,54 @@ void TrafficManager::UpdateStats() {
 #endif
 
 #ifdef TRACK_CREDITS
+  // Print cycle header for credit logs for readability
+  if (_used_credits_out) *_used_credits_out << "Cycle: " << _time << "\n";
+  if (_free_credits_out) *_free_credits_out << "Cycle: " << _time << "\n";
+  if (_max_credits_out) *_max_credits_out << "Cycle: " << _time << "\n";
+
   for (int s = 0; s < _subnets; ++s) {
     for (int n = 0; n < _nodes; ++n) {
       BufferState const *const bs = _buf_states[n][s];
       for (int v = 0; v < _vcs; ++v) {
-        if (_used_credits_out)
-          *_used_credits_out << bs->OccupancyFor(v) << ',';
-        if (_free_credits_out)
-          *_free_credits_out << bs->AvailableFor(v) << ',';
-        if (_max_credits_out)
-          *_max_credits_out << bs->LimitFor(v) << ',';
+        if (_used_credits_out) {
+          if (v == 0) *_used_credits_out << "  Subnet: " << s << " Node: " << n << " VCs: [";
+          *_used_credits_out << " " << v << ":" << bs->OccupancyFor(v);
+          if (v == _vcs - 1) *_used_credits_out << " ]" << '\n';
+        }
+        if (_free_credits_out) {
+          if (v == 0) *_free_credits_out << "  Subnet: " << s << " Node: " << n << " VCs: [";
+          *_free_credits_out << " " << v << ":" << bs->AvailableFor(v);
+          if (v == _vcs - 1) *_free_credits_out << " ]" << '\n';
+        }
+        if (_max_credits_out) {
+          if (v == 0) *_max_credits_out << "  Subnet: " << s << " Node: " << n << " VCs: [";
+          *_max_credits_out << " " << v << ":" << bs->LimitFor(v);
+          if (v == _vcs - 1) *_max_credits_out << " ]" << '\n';
+        }
       }
     }
     for (int r = 0; r < _routers; ++r) {
       Router const *const rtr = _router[s][r];
       char trail_char =
           ((r == _routers - 1) && (s == _subnets - 1)) ? '\n' : ',';
-      if (_used_credits_out)
-        *_used_credits_out << rtr->UsedCredits() << trail_char;
-      if (_free_credits_out)
-        *_free_credits_out << rtr->FreeCredits() << trail_char;
-      if (_max_credits_out)
-        *_max_credits_out << rtr->MaxCredits() << trail_char;
+      if (_used_credits_out) {
+        vector<int> uc = rtr->UsedCredits();
+        *_used_credits_out << "  Subnet: " << s << " Router: " << r << " Used: [";
+        for (size_t i = 0; i < uc.size(); ++i) *_used_credits_out << " " << i << ":" << uc[i];
+        *_used_credits_out << " ]" << '\n';
+      }
+      if (_free_credits_out) {
+        vector<int> fc = rtr->FreeCredits();
+        *_free_credits_out << "  Subnet: " << s << " Router: " << r << " Free: [";
+        for (size_t i = 0; i < fc.size(); ++i) *_free_credits_out << " " << i << ":" << fc[i];
+        *_free_credits_out << " ]" << '\n';
+      }
+      if (_max_credits_out) {
+        vector<int> mc = rtr->MaxCredits();
+        *_max_credits_out << "  Subnet: " << s << " Router: " << r << " Max: [";
+        for (size_t i = 0; i < mc.size(); ++i) *_max_credits_out << " " << i << ":" << mc[i];
+        *_max_credits_out << " ]" << '\n';
+      }
     }
   }
   if (_used_credits_out)

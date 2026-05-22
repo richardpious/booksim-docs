@@ -11,7 +11,7 @@ topology = mesh;
 routing_function = adaptive_xy_yx;
 
 // Flow control
-num_vcs     = 6;
+num_vcs     = 4;
 vc_buf_size = 8;
 wait_for_tail_credit = 1;
 
@@ -67,6 +67,8 @@ speculative=0;
 
 
 used_credits_out = used_credits_out.txt;
+free_credits_out = free_credits_out.txt;
+max_credits_out = max_credits_out.txt;
 injected_flits_out = injected_flits.txt;
 received_flits_out = received_flits.txt;
 stored_flits_out = stored_flits.txt;
