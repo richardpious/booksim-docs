@@ -1911,7 +1911,7 @@ void TrafficManager::UpdateStats() {
       // For readability in injected_filts.txt
       if (_injected_flits_out) {
         *_injected_flits_out << "Cycle: " << _time << " Class: " << c
-                             << " Nodes: [";
+                             << " Flits Injected per Node: [";
         for (size_t i = 0; i < _injected_flits[c].size(); ++i) {
           *_injected_flits_out << " " << i << ":" << _injected_flits[c][i];
         }
@@ -1921,11 +1921,11 @@ void TrafficManager::UpdateStats() {
       // For readability in ejected_flits.txt
       if (_ejected_flits_out) {
         *_ejected_flits_out << "Cycle: " << _time << " Class: " << c
-                            << " Nodes: [";
+                            << " Flits Ejected per Node: [";
         for (size_t i = 0; i < _ejected_flits[c].size(); ++i) {
           *_ejected_flits_out << " " << i << ":" << _ejected_flits[c][i];
         }
-        *_ejected_flits_out << " ]" << trail_char;
+        *_ejected_flits_out << " ]" << '\n';
       }
       _ejected_flits[c].assign(_nodes, 0);
     }
@@ -2024,7 +2024,7 @@ void TrafficManager::UpdateStats() {
         // Human-readable active_packets per subnet/router
         if (_active_packets_out) {
           *_active_packets_out << "  Subnet: " << subnet << " Router: "
-                               << router << " Packets: [";
+                               << router << " Packets Actively Traversing per Port: [";
 
           vector<int> const &ap = r->GetActivePackets(c);
           for (size_t i = 0; i < ap.size(); ++i) {
