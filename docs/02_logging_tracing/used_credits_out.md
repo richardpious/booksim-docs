@@ -1,4 +1,4 @@
-[<- Previous Page](../07_debugging_tracing/README.md) | [Index](../index.md)
+[<- Previous Page](../01_running_simulations/README.md) | [Index](../index.md)
 
 # used_credits_out / free_credits_out / max_credits_out
 

@@ -1,4 +1,4 @@
-[<- Index](../index.md)
+[<- Index](../)
 
 # Running Simulations
 

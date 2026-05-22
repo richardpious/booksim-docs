@@ -1,4 +1,4 @@
-[<- Previous Page](../07_debugging_tracing/README.md) | [Index](../index.md)
+[<- Previous Page](../01_running_simulations/README.md) | [Index](../index.md)
 
 # injected_flits_out / ejected_flits_out
 
