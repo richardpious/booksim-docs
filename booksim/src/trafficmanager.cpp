@@ -400,6 +400,7 @@ TrafficManager::TrafficManager(const Configuration &config,
     _injected_flits_out = NULL;
   } else {
     _injected_flits_out = new ofstream(injected_flits_out_file.c_str());
+      if(_injected_flits_out) *_injected_flits_out << "Flits Injected per Node\n";
   }
   string received_flits_out_file = config.GetStr("received_flits_out");
   if (received_flits_out_file == "") {
@@ -432,13 +433,14 @@ TrafficManager::TrafficManager(const Configuration &config,
     _ejected_flits_out = NULL;
   } else {
     _ejected_flits_out = new ofstream(ejected_flits_out_file.c_str());
+      if(_ejected_flits_out) *_ejected_flits_out << "Flits Ejected per Node\n";
   }
   string active_packets_out_file = config.GetStr("active_packets_out");
   if (active_packets_out_file == "") {
     _active_packets_out = NULL;
   } else {
     _active_packets_out = new ofstream(active_packets_out_file.c_str());
-      if(_active_packets_out) *_active_packets_out << "Packets Actively Traversing per Cycle\n";
+      if(_active_packets_out) *_active_packets_out << "Packets Actively Traversing per Port\n";
   }
 #endif
 
@@ -1911,8 +1913,7 @@ void TrafficManager::UpdateStats() {
       char trail_char = (c == _classes - 1) ? '\n' : ',';
       // For readability in injected_filts.txt
       if (_injected_flits_out) {
-        *_injected_flits_out << "Cycles " << _time-1000 << " to " << _time-1 << " Class: " << c
-                             << " Flits Injected per Node: [";
+        *_injected_flits_out << "Cycles " << _time-1000 << " to " << _time-1 << " Class " << c << ": [";
         for (size_t i = 0; i < _injected_flits[c].size(); ++i) {
           *_injected_flits_out << " " << i << ":" << _injected_flits[c][i];
         }
@@ -1921,8 +1922,7 @@ void TrafficManager::UpdateStats() {
       _injected_flits[c].assign(_nodes, 0);
       // For readability in ejected_flits.txt
       if (_ejected_flits_out) {
-        *_ejected_flits_out << "Cycles " << _time-1000 << " to " << _time-1 << " Class: " << c
-                            << " Flits Ejected per Node: [";
+        *_ejected_flits_out << "Cycles " << _time-1000 << " to " << _time-1 << " Class " << c << ": [";
         for (size_t i = 0; i < _ejected_flits[c].size(); ++i) {
           *_ejected_flits_out << " " << i << ":" << _ejected_flits[c][i];
         }
